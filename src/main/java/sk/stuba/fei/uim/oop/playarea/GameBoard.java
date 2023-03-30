@@ -15,8 +15,10 @@ public class GameBoard extends JPanel {
     int start;
     int end;
     private final Random rand;
+    Stack<Tile> path;
 
     public GameBoard(int boardSize) {
+        this.path = new Stack<>();
         this.boardSize=boardSize;
         this.rand = new Random();
         this.start = rand.nextInt(boardSize);
@@ -33,7 +35,7 @@ public class GameBoard extends JPanel {
 
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
-                this.board[i][j] = new Tile(i,j);
+                this.board[i][j] = new Tile(i,j, boardSize);
                 this.add(this.board[i][j]);
             }
         }
@@ -80,18 +82,17 @@ public class GameBoard extends JPanel {
     }
 
     public void createPath(int startX, int startY, int endX, int endY) {
-        Stack<Tile> stack = new Stack<>();
         Tile startTile = getTile(startX, startY);
         Tile endTile = getTile(endX, endY);
 
         startTile.setVisited(true);
-        stack.push(startTile);
+        path.push(startTile);
 
-        while (!stack.empty()) {
-            Tile currentTile = stack.peek();
+        while (!path.empty()) {
+            Tile currentTile = path.peek();
             if (currentTile == endTile) {
-                stack.push(currentTile);
-                highlightPath(stack);
+                path.push(currentTile);
+                highlightPath();
                 startTile.setTileState(TileState.START);
                 endTile.setTileState(TileState.END);
                 return;
@@ -108,14 +109,14 @@ public class GameBoard extends JPanel {
             if (!unvisitedNeighbors.isEmpty()) {
                 Tile nextTile = unvisitedNeighbors.get(new Random().nextInt(unvisitedNeighbors.size()));
                 nextTile.setVisited(true);
-                stack.push(nextTile);
+                path.push(nextTile);
             } else {
-                stack.pop();
+                path.pop();
             }
         }
     }
 
-    private void highlightPath(List<Tile> path) {
+    private void highlightPath() {
         for (int i = 1; i < path.size() - 1; i++) {
             Tile currentTile = path.get(i);
             Tile prevTile = path.get(i - 1);
@@ -157,20 +158,38 @@ public class GameBoard extends JPanel {
 
             if (leftCount == 1 && bottomCount == 1) {
                 currentTile.setTileState(TileState.L_PIPE_DOWN_LEFT);
+                currentTile.setPipeShape(PipeShape.L_SHAPE);
             } else if (leftCount == 1 && topCount == 1) {
                 currentTile.setTileState(TileState.L_PIPE_TOP_LEFT);
+                currentTile.setPipeShape(PipeShape.L_SHAPE);
             } else if (rightCount == 1 && bottomCount == 1) {
                 currentTile.setTileState(TileState.L_PIPE_DOWN_RIGHT);
+                currentTile.setPipeShape(PipeShape.L_SHAPE);
             } else if (rightCount == 1 && topCount == 1) {
                 currentTile.setTileState(TileState.L_PIPE_TOP_RIGHT);
+                currentTile.setPipeShape(PipeShape.L_SHAPE);
             } else if (leftCount + rightCount == 0 && (topCount > 0 || bottomCount > 0)) {
                 currentTile.setTileState(TileState.I_PIPE_TOP_DOWN);
+                currentTile.setPipeShape(PipeShape.I_SHAPE);
             } else if (topCount + bottomCount == 0 && (leftCount > 0 || rightCount > 0)) {
                 currentTile.setTileState(TileState.I_PIPE_LEFT_RIGHT);
+                currentTile.setPipeShape(PipeShape.I_SHAPE);
             } else {
                 currentTile.setTileState(TileState.EMPTY);
             }
-            System.out.println(currentTile.getTileState().name());
+            currentTile.setCurrentTileStateRandom();
         }
+    }
+
+    public boolean checkWin(){
+        for(Tile tile : path){
+            if(tile.getCorrectTileState().equals(TileState.START) || tile.getCorrectTileState().equals(TileState.END)){
+                continue;
+            }
+            if(!tile.checkCorrectShape()){
+                return false;
+            }
+        }
+        return true;
     }
 }
