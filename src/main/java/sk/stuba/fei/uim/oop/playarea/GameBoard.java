@@ -8,10 +8,8 @@ import java.util.List;
 import java.util.Stack;
 
 public class GameBoard extends JPanel {
-
-
     private final int boardSize;
-    private Tile[][] board;
+    private  Tile[][] board;
     int start;
     int end;
     private final Random rand;
@@ -23,27 +21,26 @@ public class GameBoard extends JPanel {
         this.rand = new Random();
         this.start = rand.nextInt(boardSize);
         this.end = rand.nextInt(boardSize);
+        this.board = new Tile[boardSize][boardSize];
         initializeBoard(boardSize);
     }
 
     private void initializeBoard(int boardSize) {
-
-        this.board = new Tile[boardSize][boardSize];
-
         this.setLayout(new GridLayout(boardSize, boardSize));
-
 
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
-                this.board[i][j] = new Tile(i,j, boardSize);
-                this.add(this.board[i][j]);
+                    this.board[i][j] = new Tile(i, j, boardSize);
+                    this.board[i][j].setTileState(TileState.EMPTY);
+                    this.add(this.board[i][j]);
             }
         }
+        createPath(0,getStart(),getBoardSize()-1,getEnd());
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(800, 800);
+        return new Dimension(800   , 800);
     }
 
     public Tile getTile(int x, int y){
@@ -187,9 +184,14 @@ public class GameBoard extends JPanel {
                 continue;
             }
             if(!tile.checkCorrectShape()){
+                this.repaint();
                 return false;
             }
+            tile.setCorrectPosition(true);
         }
+        this.repaint();
+
         return true;
     }
+
 }

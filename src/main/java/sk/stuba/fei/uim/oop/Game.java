@@ -5,30 +5,39 @@ import sk.stuba.fei.uim.oop.playarea.GameBoard;
 import java.awt.*;
 import java.util.Hashtable;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 public class Game{
 
     private GameBoard board;
     int boardSize;
+    int level;
 
     Game(){
+        level=1;
+
         boardSize=8;
+
+        JFrame frame = new JFrame("Water Pipes : The Action Game ");
+
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         this.board = new GameBoard(boardSize);
 
-        JFrame frame = new JFrame();
-        frame.setTitle("Water Pipes");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
 
         JPanel sidePanel = new JPanel();
         sidePanel.setLayout(new FlowLayout());
+
         JSlider slider = new JSlider(8, 12, 10);
         slider.setMajorTickSpacing(2);
         slider.setMinorTickSpacing(2);
         slider.setPaintTicks(true);
+
         JLabel label = new JLabel(String.valueOf(slider.getValue()), JLabel.CENTER);
         label.setPreferredSize(new Dimension(50, 20));
+        JLabel levelLabel = new JLabel("Level: "+level);
 
         Hashtable<Integer, JLabel> labelTable = new Hashtable<>();
         labelTable.put(8, new JLabel("8"));
@@ -37,6 +46,7 @@ public class Game{
         slider.setLabelTable(labelTable);
         slider.setPaintLabels(true);
         slider.setSnapToTicks(true);
+
         slider.addChangeListener(e -> {
             boardSize = slider.getValue();
             GameBoard newGameBoard = new GameBoard(boardSize);
@@ -44,47 +54,59 @@ public class Game{
             contentPane.remove(board);
             contentPane.add(newGameBoard, BorderLayout.CENTER);
             board = newGameBoard;
-            board.createPath(0,board.getStart(),board.getBoardSize()-1,board.getEnd());
             frame.pack();
+            board.revalidate();
             board.repaint();
         });
 
-        JButton button2 = new JButton("RESET");
+        JButton reset = new JButton("RESET");
         JButton button3 = new JButton("Check win");
-        sidePanel.add(button2);
+        sidePanel.add(reset);
         sidePanel.add(button3);
+        sidePanel.add(levelLabel);
 
-        button2.addActionListener(e -> {
+        reset.addActionListener(e -> {
             GameBoard newGameBoard = new GameBoard(boardSize);
             Container contentPane = frame.getContentPane();
             contentPane.remove(board);
             contentPane.add(newGameBoard, BorderLayout.CENTER);
             board = newGameBoard;
-            board.createPath(0,board.getStart(),board.getBoardSize()-1,board.getEnd());
             frame.pack();
+            level=1;
+            levelLabel.setText("Level: " + level);
             board.repaint();
 
         });
 
         button3.addActionListener(e -> {
             if(board.checkWin()){
-                System.out.printf("YOU WIN");
+
+                JOptionPane.showMessageDialog(null, "YOU WIN!");
+                GameBoard newGameBoard = new GameBoard(boardSize);
+                Container contentPane = frame.getContentPane();
+                contentPane.remove(board);
+                contentPane.add(newGameBoard, BorderLayout.CENTER);
+                board = newGameBoard;
+                frame.pack();
+                level++;
+                levelLabel.setText("Level: " + level);
+
             }
             else{
                 System.out.println("NOT CORRECT!");
+                frame.pack();
             }
-
+            board.repaint();
         });
 
-
-        board.createPath(0,board.getStart(),board.getBoardSize()-1,board.getEnd());
-        frame.getContentPane().add(board, BorderLayout.CENTER);
+        sidePanel.add(slider, BorderLayout.NORTH);
         frame.getContentPane().add(sidePanel, BorderLayout.NORTH);
-        frame.getContentPane().add(slider, BorderLayout.SOUTH);
+        frame.getContentPane().add(board, BorderLayout.CENTER);
 
         frame.pack();
-        frame.setVisible(true);
         board.repaint();
+        frame.setVisible(true);
+
     }
 
 
