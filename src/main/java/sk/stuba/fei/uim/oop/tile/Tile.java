@@ -1,9 +1,7 @@
-package sk.stuba.fei.uim.oop.playarea;
+package sk.stuba.fei.uim.oop.tile;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -18,10 +16,8 @@ public class Tile extends JPanel {
     Random rand;
     private boolean highlight;
     private boolean correctPosition;
-    private int boardSize;
 
-
-    Tile(int y, int x, int boardSize) {
+    public Tile(int y, int x, int boardSize) {
         this.x = x;
         this.y = y;
 
@@ -31,31 +27,10 @@ public class Tile extends JPanel {
 
         this.correctPosition = false;
 
-        this.boardSize = boardSize;
-
         tileSize=800/boardSize;
 
         this.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-
-        this.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                switchCurrentTileState();
-                repaint();
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                highlight = true;
-                repaint();
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                highlight = false;
-                repaint();
-            }
-        });
     }
 
 
@@ -82,11 +57,11 @@ public class Tile extends JPanel {
         return this.visited;
     }
 
-    public int getX() {
+    public int tileX() {
         return this.x;
     }
 
-    public int getY() {
+    public int tileY() {
         return this.y;
     }
 
@@ -94,25 +69,13 @@ public class Tile extends JPanel {
         return correctTileState;
     }
 
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    public void setHighlight(boolean value){
+        this.highlight=value;
+    }
 
-        setBackground(Color.WHITE);
-        if(highlight){
-            this.setBackground(Color.YELLOW);
-        }
-        else {
-            if(correctPosition){
-                this.setBackground(Color.GREEN);
-            } else if (this.currentTileState.equals(TileState.START)) {
-                this.setBackground(Color.GREEN);
-            } else if (this.currentTileState.equals(TileState.END)) {
-                this.setBackground(Color.RED);
-            }
-            else {
-                this.setBackground(Color.WHITE);
-            }
-        }
+    public void paintComponent(Graphics g) {
+//        System.out.println("TILE ["+this.x+","+this.y+"]");
+        super.paintComponent(g);
 
         if (this.currentTileState.equals(TileState.L_PIPE_DOWN_RIGHT)) {
             g.fillRect(20, 20, tileSize/2, tileSize );
@@ -130,11 +93,31 @@ public class Tile extends JPanel {
             g.fillRect(20, 0, tileSize/2, tileSize);
         }else if (this.currentTileState.equals(TileState.I_PIPE_LEFT_RIGHT)) {
             g.fillRect(0, 20, tileSize , tileSize / 2);
-         }
+
+         }else if (this.currentTileState.equals(TileState.START)) {
+            g.setColor(Color.GREEN);
+            g.fillRect(20, 20, tileSize/2 , tileSize / 2);
+        }else if (this.currentTileState.equals(TileState.END)) {
+            g.setColor(Color.RED);
+            g.fillRect(20, 20, tileSize/2 , tileSize / 2);
+        }
+
+        if(highlight){
+            this.setBackground(Color.LIGHT_GRAY);
+        }
+        else {
+            if(correctPosition){
+                this.setBackground(Color.GREEN);
+            }
+            else {
+                this.setBackground(Color.WHITE);
+            }
+        }
     }
 
     public void switchCurrentTileState(){
-        if(pipeShape==null){
+//        this.highlight = true;
+        if(pipeShape==null || correctTileState.equals(TileState.START)||correctTileState.equals(TileState.END)){
             return;
         }
         TileState[] LStates = {

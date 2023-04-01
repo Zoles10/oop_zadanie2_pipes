@@ -1,4 +1,4 @@
-package sk.stuba.fei.uim.oop.playarea;
+package sk.stuba.fei.uim.oop.tile;
 
 public enum TileState {
 

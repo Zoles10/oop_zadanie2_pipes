@@ -1,4 +1,8 @@
-package sk.stuba.fei.uim.oop.playarea;
+package sk.stuba.fei.uim.oop.board;
+
+import sk.stuba.fei.uim.oop.tile.PipeShape;
+import sk.stuba.fei.uim.oop.tile.Tile;
+import sk.stuba.fei.uim.oop.tile.TileState;
 
 import java.awt.*;
 import javax.swing.*;
@@ -55,17 +59,17 @@ public class GameBoard extends JPanel {
 
         java.util.List<Tile> neighbors = new ArrayList<>();
 
-        if(currentTile.getX()-1 >= 0){
-            neighbors.add(board[currentTile.getY()][currentTile.getX()-1]);
+        if(currentTile.tileX()-1 >= 0){
+            neighbors.add(board[currentTile.tileY()][currentTile.tileX()-1]);
         }
-        if(currentTile.getX()+1 < boardSize){
-            neighbors.add(board[currentTile.getY()][currentTile.getX()+1]);
+        if(currentTile.tileX()+1 < boardSize){
+            neighbors.add(board[currentTile.tileY()][currentTile.tileX()+1]);
         }
-        if(currentTile.getY()-1 >= 0){
-            neighbors.add(board[currentTile.getY()-1][currentTile.getX()]);
+        if(currentTile.tileY()-1 >= 0){
+            neighbors.add(board[currentTile.tileY()-1][currentTile.tileX()]);
         }
-        if(currentTile.getY()+1 < boardSize){
-            neighbors.add(board[currentTile.getY()+1][currentTile.getX()]);
+        if(currentTile.tileY()+1 < boardSize){
+            neighbors.add(board[currentTile.tileY()+1][currentTile.tileX()]);
         }
         return neighbors;
     }
@@ -79,6 +83,7 @@ public class GameBoard extends JPanel {
     }
 
     public void createPath(int startX, int startY, int endX, int endY) {
+        System.out.println("here");
         Tile startTile = getTile(startX, startY);
         Tile endTile = getTile(endX, endY);
 
@@ -124,28 +129,28 @@ public class GameBoard extends JPanel {
             int topCount = 0;
             int bottomCount = 0;
 
-            if (currentTile.getX() == prevTile.getX()) {
-                if (currentTile.getY() > prevTile.getY()) {
+            if (currentTile.tileX() == prevTile.tileX()) {
+                if (currentTile.tileY() > prevTile.tileY()) {
                     topCount++;
                 } else {
                     bottomCount++;
                 }
             } else {
-                if (currentTile.getX() > prevTile.getX()) {
+                if (currentTile.tileX() > prevTile.tileX()) {
                     leftCount++;
                 } else {
                     rightCount++;
                 }
             }
 
-            if (currentTile.getX() == nextTile.getX()) {
-                if (currentTile.getY() > nextTile.getY()) {
+            if (currentTile.tileX() == nextTile.tileX()) {
+                if (currentTile.tileY() > nextTile.tileY()) {
                     topCount++;
                 } else {
                     bottomCount++;
                 }
             } else {
-                if (currentTile.getX() > nextTile.getX()) {
+                if (currentTile.tileX() > nextTile.tileX()) {
                     leftCount++;
                 } else {
                     rightCount++;
@@ -175,6 +180,7 @@ public class GameBoard extends JPanel {
                 currentTile.setTileState(TileState.EMPTY);
             }
             currentTile.setCurrentTileStateRandom();
+            repaint();
         }
     }
 

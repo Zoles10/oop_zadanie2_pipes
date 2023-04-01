@@ -1,4 +1,4 @@
-package sk.stuba.fei.uim.oop.playarea;
+package sk.stuba.fei.uim.oop.board;
 
 public enum Direction {
     UP(0, 1),
