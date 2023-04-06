@@ -1,8 +1,6 @@
 package sk.stuba.fei.uim.oop.board;
 
-import sk.stuba.fei.uim.oop.tile.PipeShape;
-import sk.stuba.fei.uim.oop.tile.Tile;
-import sk.stuba.fei.uim.oop.tile.TileState;
+import sk.stuba.fei.uim.oop.tile.*;
 
 import java.awt.*;
 import javax.swing.*;
@@ -13,9 +11,9 @@ import java.util.Stack;
 
 public class GameBoard extends JPanel {
     private final int boardSize;
-    private  Tile[][] board;
-    int start;
-    int end;
+    private final  Tile[][] board;
+    private final int start;
+    private final int end;
     private final Random rand;
     Stack<Tile> path;
 
@@ -34,12 +32,18 @@ public class GameBoard extends JPanel {
 
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
-                    this.board[i][j] = new Tile(i, j, boardSize);
-                    this.board[i][j].setTileState(TileState.EMPTY);
-                    this.add(this.board[i][j]);
+                    this.board[i][j] = new Empty(i, j, boardSize);
+                    this.board[i][j].setCurrentTileState(TileState.EMPTY);
+                    this.board[i][j].setCorrectTileState(TileState.EMPTY);
             }
         }
         createPath(0,getStart(),getBoardSize()-1,getEnd());
+
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                this.add(this.board[i][j]);
+            }
+        }
     }
 
     @Override
@@ -59,17 +63,17 @@ public class GameBoard extends JPanel {
 
         java.util.List<Tile> neighbors = new ArrayList<>();
 
-        if(currentTile.tileX()-1 >= 0){
-            neighbors.add(board[currentTile.tileY()][currentTile.tileX()-1]);
+        if(currentTile.getPosX()-1 >= 0){
+            neighbors.add(board[currentTile.getPosY()][currentTile.getPosX()-1]);
         }
-        if(currentTile.tileX()+1 < boardSize){
-            neighbors.add(board[currentTile.tileY()][currentTile.tileX()+1]);
+        if(currentTile.getPosX()+1 < boardSize){
+            neighbors.add(board[currentTile.getPosY()][currentTile.getPosX()+1]);
         }
-        if(currentTile.tileY()-1 >= 0){
-            neighbors.add(board[currentTile.tileY()-1][currentTile.tileX()]);
+        if(currentTile.getPosY()-1 >= 0){
+            neighbors.add(board[currentTile.getPosY()-1][currentTile.getPosX()]);
         }
-        if(currentTile.tileY()+1 < boardSize){
-            neighbors.add(board[currentTile.tileY()+1][currentTile.tileX()]);
+        if(currentTile.getPosY()+1 < boardSize){
+            neighbors.add(board[currentTile.getPosY()+1][currentTile.getPosX()]);
         }
         return neighbors;
     }
@@ -83,7 +87,6 @@ public class GameBoard extends JPanel {
     }
 
     public void createPath(int startX, int startY, int endX, int endY) {
-        System.out.println("here");
         Tile startTile = getTile(startX, startY);
         Tile endTile = getTile(endX, endY);
 
@@ -95,8 +98,10 @@ public class GameBoard extends JPanel {
             if (currentTile == endTile) {
                 path.push(currentTile);
                 highlightPath();
-                startTile.setTileState(TileState.START);
-                endTile.setTileState(TileState.END);
+                startTile.setCorrectTileState(TileState.VALVE);
+                startTile.setCurrentTileState(TileState.VALVE);
+                endTile.setCorrectTileState(TileState.VALVE);
+                endTile.setCurrentTileState(TileState.VALVE);
                 return;
             }
 
@@ -129,28 +134,28 @@ public class GameBoard extends JPanel {
             int topCount = 0;
             int bottomCount = 0;
 
-            if (currentTile.tileX() == prevTile.tileX()) {
-                if (currentTile.tileY() > prevTile.tileY()) {
+            if (currentTile.getPosX() == prevTile.getPosX()) {
+                if (currentTile.getPosY() > prevTile.getPosY()) {
                     topCount++;
                 } else {
                     bottomCount++;
                 }
             } else {
-                if (currentTile.tileX() > prevTile.tileX()) {
+                if (currentTile.getPosX() > prevTile.getPosX()) {
                     leftCount++;
                 } else {
                     rightCount++;
                 }
             }
 
-            if (currentTile.tileX() == nextTile.tileX()) {
-                if (currentTile.tileY() > nextTile.tileY()) {
+            if (currentTile.getPosX() == nextTile.getPosX()) {
+                if (currentTile.getPosY() > nextTile.getPosY()) {
                     topCount++;
                 } else {
                     bottomCount++;
                 }
             } else {
-                if (currentTile.tileX() > nextTile.tileX()) {
+                if (currentTile.getPosX() > nextTile.getPosX()) {
                     leftCount++;
                 } else {
                     rightCount++;
@@ -159,34 +164,54 @@ public class GameBoard extends JPanel {
             }
 
             if (leftCount == 1 && bottomCount == 1) {
-                currentTile.setTileState(TileState.L_PIPE_DOWN_LEFT);
-                currentTile.setPipeShape(PipeShape.L_SHAPE);
+                currentTile = new LPipe(currentTile.getPosY(), currentTile.getPosX(),boardSize);
+                this.board[currentTile.getPosY()][currentTile.getPosX()] = currentTile;
+                path.set(i,currentTile);
+                currentTile.setCorrectTileState(TileState.L_PIPE_DOWN_LEFT);
             } else if (leftCount == 1 && topCount == 1) {
-                currentTile.setTileState(TileState.L_PIPE_TOP_LEFT);
-                currentTile.setPipeShape(PipeShape.L_SHAPE);
+                currentTile = new LPipe(currentTile.getPosY(), currentTile.getPosX(),boardSize);
+                this.board[currentTile.getPosY()][currentTile.getPosX()] = currentTile;
+                path.set(i,currentTile);
+                currentTile.setCorrectTileState(TileState.L_PIPE_TOP_LEFT);
             } else if (rightCount == 1 && bottomCount == 1) {
-                currentTile.setTileState(TileState.L_PIPE_DOWN_RIGHT);
-                currentTile.setPipeShape(PipeShape.L_SHAPE);
+                currentTile = new LPipe(currentTile.getPosY(), currentTile.getPosX(),boardSize);
+                this.board[currentTile.getPosY()][currentTile.getPosX()] = currentTile;
+                path.set(i,currentTile);
+                currentTile.setCorrectTileState(TileState.L_PIPE_DOWN_RIGHT);
             } else if (rightCount == 1 && topCount == 1) {
-                currentTile.setTileState(TileState.L_PIPE_TOP_RIGHT);
-                currentTile.setPipeShape(PipeShape.L_SHAPE);
+                currentTile = new LPipe(currentTile.getPosY(), currentTile.getPosX(),boardSize);
+                this.board[currentTile.getPosY()][currentTile.getPosX()] = currentTile;
+                path.set(i,currentTile);
+                currentTile.setCorrectTileState(TileState.L_PIPE_TOP_RIGHT);
             } else if (leftCount + rightCount == 0 && (topCount > 0 || bottomCount > 0)) {
-                currentTile.setTileState(TileState.I_PIPE_TOP_DOWN);
-                currentTile.setPipeShape(PipeShape.I_SHAPE);
+                currentTile = new IPipe(currentTile.getPosY(), currentTile.getPosX(),boardSize);
+                this.board[currentTile.getPosY()][currentTile.getPosX()] = currentTile;
+                path.set(i,currentTile);
+                currentTile.setCorrectTileState(TileState.I_PIPE_TOP_DOWN);
             } else if (topCount + bottomCount == 0 && (leftCount > 0 || rightCount > 0)) {
-                currentTile.setTileState(TileState.I_PIPE_LEFT_RIGHT);
-                currentTile.setPipeShape(PipeShape.I_SHAPE);
+                currentTile = new IPipe(currentTile.getPosY(), currentTile.getPosX(),boardSize);
+                this.board[currentTile.getPosY()][currentTile.getPosX()] = currentTile;
+                path.set(i,currentTile);
+                currentTile.setCorrectTileState(TileState.I_PIPE_LEFT_RIGHT);
             } else {
-                currentTile.setTileState(TileState.EMPTY);
+                currentTile = new Valve(currentTile.getPosY(), currentTile.getPosX(),boardSize);
+                this.board[currentTile.getPosY()][currentTile.getPosX()] = currentTile;
+                path.set(i,currentTile);
+                currentTile.setCorrectTileState(TileState.VALVE);
+                currentTile.setCurrentTileState(TileState.VALVE);
             }
             currentTile.setCurrentTileStateRandom();
             repaint();
         }
+        this.board[end][boardSize-1] = new Valve(end, boardSize-1,boardSize);
+        path.set(path.size()-1,this.board[end][boardSize-1]);
+        this.board[end][boardSize-1].setCorrectTileState(TileState.VALVE);
+        this.board[end][boardSize-1].setCurrentTileState(TileState.VALVE);
     }
 
     public boolean checkWin(){
         for(Tile tile : path){
-            if(tile.getCorrectTileState().equals(TileState.START) || tile.getCorrectTileState().equals(TileState.END)){
+            if(tile.getCorrectTileState().equals(TileState.VALVE) ){
                 continue;
             }
             if(!tile.checkCorrectShape()){

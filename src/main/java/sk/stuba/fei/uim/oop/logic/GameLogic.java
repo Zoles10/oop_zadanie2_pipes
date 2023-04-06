@@ -38,6 +38,8 @@ public class GameLogic extends UniversalAdapter {
         this.level = 1;
         this.levelLabel = new JLabel();
         setLevelLabelText();
+//        this.gameBoard.setFocusable(true);
+//        this.gameBoard.requestFocusInWindow();
     }
 
     private void setLevelLabelText(){
@@ -66,18 +68,23 @@ public class GameLogic extends UniversalAdapter {
             this.level = 1;
             this.gameRestart();
         } else if (e.getSource() == checkWinButton) {
-            if(gameBoard.checkWin()){
-                JOptionPane.showMessageDialog(null, "YOU WIN!");
-                level++;
-                setLevelLabelText();
-                gameRestart();
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "TRY HARDER");
-            }
+            checkWin();
         }
         this.frame.revalidate();
         this.frame.repaint();
+    }
+
+    public void checkWin(){
+        if(gameBoard.checkWin()){
+            JOptionPane.showMessageDialog(null, "YOU WIN!");
+            level++;
+            gameRestart();
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "TRY HARDER");
+        }
+        this.lastHighlightedTile.setHighlight(false);
+
     }
     public void mousePressed(MouseEvent e) {
         Component current = this.gameBoard.getComponentAt(e.getX(), e.getY());
@@ -85,9 +92,10 @@ public class GameLogic extends UniversalAdapter {
             return;
         }
 
-
-        ((Tile) current).switchCurrentTileState();
-        current.repaint();
+        if(!((Tile) current).isCorrectPosition()) {
+            ((Tile) current).switchCurrentTileState();
+            current.repaint();
+        }
 }
 
     @Override
@@ -111,39 +119,15 @@ public class GameLogic extends UniversalAdapter {
         }
 
         lastHighlightedTile.setHighlight(true);
-        System.out.println("TILE ["+((Tile) current).tileX()+","+((Tile) current).tileY()+"]");
+//        System.out.println("TILE ["+((Tile) current).getX()+","+((Tile) current).getY()+"]");
         this.gameBoard.repaint();
     }
-//    @Override
-//    public void mouseEntered(MouseEvent e){
-//        Component current = this.gameBoard.getComponentAt(e.getX(), e.getY());
-//        if (!(current instanceof Tile)) {
-//            return;
-//        }
-//
-//        ((Tile) current).setHighlight(true);
-//        System.out.println("ENTER ["+((Tile) current).tileX()+","+((Tile) current).tileY()+"]");
-//        current.repaint();
-//    }
-//
-////    @Override
-//    public void mouseExited(MouseEvent e){
-//        Component current = this.gameBoard.getComponentAt(e.getX(), e.getY());
-//        if (!(current instanceof Tile)) {
-//            return;
-//        }
-//
-//        ((Tile) current).setHighlight(false);
-//        System.out.println("EXIT ["+((Tile) current).tileX()+","+((Tile) current).tileY()+"]");
-//        current.repaint();
-//    }
-
-
 
     @Override
     public void stateChanged(ChangeEvent e) {
         this.currentBoardSize = ((JSlider) e.getSource()).getValue();
         this.level = 1;
+        this.lastHighlightedTile.setHighlight(false);
         this.gameRestart();
     }
 
@@ -153,9 +137,12 @@ public class GameLogic extends UniversalAdapter {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_R:
                 this.gameRestart();
+                level=1;
                 break;
             case KeyEvent.VK_ESCAPE:
                 this.frame.dispose();
+            case KeyEvent.VK_ENTER:
+                this.checkWin();
         }
     }
 
