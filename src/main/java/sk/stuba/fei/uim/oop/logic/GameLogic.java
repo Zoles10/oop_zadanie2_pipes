@@ -34,12 +34,11 @@ public class GameLogic extends UniversalAdapter {
         this.checkWinButton = checkWinButton;
         this.currentBoardSize = INITIAL_BOARD_SIZE;
         this.initializeNewBoard(this.currentBoardSize);
+
         this.frame.add( this.gameBoard,BorderLayout.CENTER);
         this.level = 1;
         this.levelLabel = new JLabel();
         setLevelLabelText();
-//        this.gameBoard.setFocusable(true);
-//        this.gameBoard.requestFocusInWindow();
     }
 
     private void setLevelLabelText(){
@@ -72,9 +71,14 @@ public class GameLogic extends UniversalAdapter {
         }
         this.frame.revalidate();
         this.frame.repaint();
+        this.frame.setFocusable(true);
+        this.frame.requestFocusInWindow();
     }
 
     public void checkWin(){
+        if(lastHighlightedTile!=null) {
+            this.lastHighlightedTile.setHighlight(false);
+        }
         if(gameBoard.checkWin()){
             JOptionPane.showMessageDialog(null, "YOU WIN!");
             level++;
@@ -82,26 +86,29 @@ public class GameLogic extends UniversalAdapter {
         }
         else{
             JOptionPane.showMessageDialog(null, "TRY HARDER");
+            this.gameBoard.resetCorrectPostion();
+            this.gameBoard.repaint();
         }
-        this.lastHighlightedTile.setHighlight(false);
 
     }
-    public void mousePressed(MouseEvent e) {
+    @Override
+    public void mouseClicked(MouseEvent e) {
         Component current = this.gameBoard.getComponentAt(e.getX(), e.getY());
         if (!(current instanceof Tile)) {
             return;
         }
 
-        if(!((Tile) current).isCorrectPosition()) {
-            ((Tile) current).switchCurrentTileState();
-            current.repaint();
-        }
+        ((Tile) current).switchCurrentTileState();
+        current.repaint();
 }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         Component current = this.gameBoard.getComponentAt(e.getX(), e.getY());
         if (!(current instanceof Tile)) {
+            if(lastHighlightedTile!=null){
+                lastHighlightedTile.setHighlight(false);
+            }
             return;
         }
 
@@ -119,16 +126,28 @@ public class GameLogic extends UniversalAdapter {
         }
 
         lastHighlightedTile.setHighlight(true);
-//        System.out.println("TILE ["+((Tile) current).getX()+","+((Tile) current).getY()+"]");
         this.gameBoard.repaint();
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        if(lastHighlightedTile!=null){
+            lastHighlightedTile.setHighlight(false);
+            lastHighlightedTile = null;
+            this.gameBoard.repaint();
+        }
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
         this.currentBoardSize = ((JSlider) e.getSource()).getValue();
         this.level = 1;
-        this.lastHighlightedTile.setHighlight(false);
+        if(lastHighlightedTile!=null) {
+            this.lastHighlightedTile.setHighlight(false);
+        }
         this.gameRestart();
+        this.frame.setFocusable(true);
+        this.frame.requestFocusInWindow();
     }
 
     @Override
@@ -136,13 +155,15 @@ public class GameLogic extends UniversalAdapter {
         System.out.println(e);
         switch (e.getKeyCode()) {
             case KeyEvent.VK_R:
-                this.gameRestart();
                 level=1;
+                this.gameRestart();
                 break;
             case KeyEvent.VK_ESCAPE:
                 this.frame.dispose();
+                break;
             case KeyEvent.VK_ENTER:
                 this.checkWin();
+                break;
         }
     }
 

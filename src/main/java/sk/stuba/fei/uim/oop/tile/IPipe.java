@@ -1,18 +1,19 @@
 package sk.stuba.fei.uim.oop.tile;
 
+import java.awt.*;
 import java.util.Arrays;
 
 public class IPipe extends Tile {
+    TileState[] IStates;
     public IPipe(int y, int x, int boardSize) {
         super(y, x, boardSize);
+        IStates = new TileState[]{
+                TileState.I_PIPE_LEFT_RIGHT,
+                TileState.I_PIPE_TOP_DOWN,};
     }
 
     @Override
     public void switchCurrentTileState(){
-        TileState[] IStates = {
-                TileState.I_PIPE_LEFT_RIGHT,
-                TileState.I_PIPE_TOP_DOWN,};
-
         int currentIndex = Arrays.asList(IStates).indexOf(this.currentTileState);
         int nextIndex = (currentIndex + 1) % IStates.length;
         this.currentTileState = IStates[nextIndex];
@@ -21,54 +22,18 @@ public class IPipe extends Tile {
 
     @Override
     public void setCurrentTileStateRandom() {
-        TileState[] IStates = {
-                TileState.I_PIPE_LEFT_RIGHT,
-                TileState.I_PIPE_TOP_DOWN,};
-
-
             int currentIndex = rand.nextInt(2);
             this.currentTileState = IStates[currentIndex];
 
     }
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+         if (this.currentTileState.equals(TileState.I_PIPE_TOP_DOWN)) {
+            g.fillRect(tileSize/4, 0, tileSize / 2, tileSize);
+        } else if (this.currentTileState.equals(TileState.I_PIPE_LEFT_RIGHT)) {
+            g.fillRect(0, tileSize/4, tileSize, tileSize / 2);
+        }
 
-//    public void paintComponent(Graphics g) {
-////        System.out.println("TILE ["+this.x+","+this.y+"]");
-//        super.paintComponent(g);
-//
-//        if (this.currentTileState.equals(TileState.L_PIPE_DOWN_RIGHT)) {
-//            g.fillRect(20, 20, tileSize/2, tileSize );
-//            g.fillRect(20 , 20, tileSize , tileSize/2);
-//        }else if (this.currentTileState.equals(TileState.L_PIPE_DOWN_LEFT)) {
-//            g.fillRect(20, 20, tileSize/2, tileSize);
-//            g.fillRect(0, 20, tileSize/2, tileSize/2);
-//        }else if (this.currentTileState.equals(TileState.L_PIPE_TOP_RIGHT)) {
-//            g.fillRect(20, 0, tileSize/2, tileSize/2);
-//            g.fillRect(20 , 20, tileSize , tileSize/2);
-//        }else if (this.currentTileState.equals(TileState.L_PIPE_TOP_LEFT)) {
-//            g.fillRect(20, 0, tileSize/2, tileSize/2);
-//            g.fillRect(0, 20, tileSize/2+20, tileSize/2);
-//        }else if (this.currentTileState.equals(TileState.I_PIPE_TOP_DOWN)) {
-//            g.fillRect(20, 0, tileSize/2, tileSize);
-//        }else if (this.currentTileState.equals(TileState.I_PIPE_LEFT_RIGHT)) {
-//            g.fillRect(0, 20, tileSize , tileSize / 2);
-//        }else if (this.currentTileState.equals(TileState.START)) {
-//            g.setColor(Color.GREEN);
-//            g.fillRect(20, 20, tileSize/2 , tileSize / 2);
-//        }else if (this.currentTileState.equals(TileState.END)) {
-//            g.setColor(Color.RED);
-//            g.fillRect(20, 20, tileSize/2 , tileSize / 2);
-//        }
-//
-//        if(highlight){
-//            this.setBackground(Color.LIGHT_GRAY);
-//        }
-//        else {
-//            if(correctPosition){
-//                this.setBackground(Color.GREEN);
-//            }
-//            else {
-//                this.setBackground(Color.WHITE);
-//            }
-//        }
-//    }
+    }
+
 }

@@ -9,6 +9,9 @@ public enum TileState {
     L_PIPE_TOP_RIGHT,
     L_PIPE_DOWN_LEFT,
     L_PIPE_DOWN_RIGHT,
-    VALVE,
+    VALVE_TOP,
+    VALVE_BOTTOM,
+    VALVE_RIGHT,
+    VALVE_LEFT,
 
 }

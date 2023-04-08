@@ -6,25 +6,23 @@ import java.awt.*;
 import java.util.Hashtable;
 import javax.swing.*;
 
-public class Game{
-
+public class Game {
     int boardSize;
 
-    public Game(){
-        boardSize=8;
+    public Game() {
+        boardSize = 8;
         JFrame frame = new JFrame("Water Pipes : The Action Game ");
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         JButton resetButton = new JButton("RESET");
         JButton checkWinButton = new JButton("Check win");
-        GameLogic logic = new GameLogic(frame,resetButton,checkWinButton);
+
+        GameLogic logic = new GameLogic(frame, resetButton, checkWinButton);
+
         resetButton.addActionListener(logic);
         checkWinButton.addActionListener(logic);
-        frame.addKeyListener(logic);
-        frame.setFocusable(true);
-        frame.requestFocusInWindow();
-        JPanel sidePanel = new JPanel();
-        sidePanel.setLayout(new GridLayout(2, 2));
-        frame.setResizable(false);
+
         JSlider slider = new JSlider(8, 12, 8);
         slider.setMajorTickSpacing(2);
         slider.setPaintTicks(true);
@@ -36,18 +34,20 @@ public class Game{
         slider.setPaintLabels(true);
         slider.setSnapToTicks(true);
         slider.addChangeListener(logic);
+
+        JPanel sidePanel = new JPanel();
+        sidePanel.setLayout(new GridLayout(2, 2));
         sidePanel.add(logic.getLevelLabel());
-        sidePanel.add(resetButton);
-        sidePanel.add(checkWinButton);
         sidePanel.add(slider);
-        frame.add(sidePanel,BorderLayout.NORTH);
+        sidePanel.add(checkWinButton);
+        sidePanel.add(resetButton);
+
+        frame.addKeyListener(logic);
+        frame.setFocusable(true);
+        frame.requestFocusInWindow();
+        frame.setResizable(false);
+        frame.add(sidePanel, BorderLayout.NORTH);
         frame.pack();
         frame.setVisible(true);
     }
-
-
-
-
-
-
 }
