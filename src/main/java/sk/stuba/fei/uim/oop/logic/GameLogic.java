@@ -21,6 +21,8 @@ public class GameLogic extends UniversalAdapter {
     private GameBoard gameBoard;
     @Getter
     private final JLabel levelLabel;
+    @Getter
+    private final JLabel boardSizeLabel;
     private int level;
 
     JButton resetButton;
@@ -34,15 +36,22 @@ public class GameLogic extends UniversalAdapter {
         this.checkWinButton = checkWinButton;
         this.currentBoardSize = INITIAL_BOARD_SIZE;
         this.initializeNewBoard(this.currentBoardSize);
-
         this.frame.add( this.gameBoard,BorderLayout.CENTER);
         this.level = 1;
         this.levelLabel = new JLabel();
-        setLevelLabelText();
+        this.boardSizeLabel = new JLabel();
+        this.levelLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        this.boardSizeLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        this.setBoardSizeLabel();
+        this.setLevelLabelText();
     }
 
     private void setLevelLabelText(){
-        this.levelLabel.setText("Level "+level);
+        this.levelLabel.setText("Level: "+level);
+    }
+
+    private void setBoardSizeLabel(){
+        this.boardSizeLabel.setText("Board size: "+getCurrentBoardSize()+"x"+getCurrentBoardSize());
     }
 
 
@@ -51,6 +60,7 @@ public class GameLogic extends UniversalAdapter {
         this.initializeNewBoard(this.currentBoardSize);
         this.frame.add( this.gameBoard,BorderLayout.CENTER);
         setLevelLabelText();
+        setBoardSizeLabel();
         this.frame.revalidate();
         this.frame.repaint();
     }
@@ -100,7 +110,8 @@ public class GameLogic extends UniversalAdapter {
 
         ((Tile) current).switchCurrentTileState();
         current.repaint();
-}
+    }
+
 
     @Override
     public void mouseMoved(MouseEvent e) {

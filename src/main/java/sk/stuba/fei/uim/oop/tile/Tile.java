@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-public abstract class Tile extends JPanel {
+public class Tile extends JPanel {
     @Getter
     protected final int posX;
     @Getter
@@ -61,7 +61,11 @@ public abstract class Tile extends JPanel {
             this.setBackground(Color.WHITE);
         }
     }
-    public abstract void switchCurrentTileState();
+    public void switchCurrentTileState(){
 
-    public abstract void setCurrentTileStateRandom();
+    }
+
+    public void setCurrentTileStateRandom(){
+
+    }
 }

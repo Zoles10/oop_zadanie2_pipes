@@ -10,8 +10,8 @@ public class LPipe extends Tile {
         this.LStates = new TileState[]{
                 TileState.L_PIPE_TOP_LEFT,
                 TileState.L_PIPE_TOP_RIGHT,
-                TileState.L_PIPE_DOWN_LEFT,
-                TileState.L_PIPE_DOWN_RIGHT,};
+                TileState.L_PIPE_DOWN_RIGHT,
+                TileState.L_PIPE_DOWN_LEFT,};
     }
 
     @Override

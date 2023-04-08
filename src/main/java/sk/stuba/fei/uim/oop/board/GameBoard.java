@@ -25,7 +25,7 @@ public class GameBoard extends JPanel {
         this.end = rand.nextInt(boardSize);
         this.board = new Tile[boardSize][boardSize];
         this.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
-        this.setBackground(Color.YELLOW);
+        this.setBackground(Color.RED);
         initializeBoard(boardSize);
     }
 
@@ -34,7 +34,7 @@ public class GameBoard extends JPanel {
 
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
-                    this.board[i][j] = new Empty(i, j, boardSize);
+                    this.board[i][j] = new Tile(i, j, boardSize);
                     this.board[i][j].setCurrentTileState(TileState.EMPTY);
                     this.board[i][j].setCorrectTileState(TileState.EMPTY);
             }

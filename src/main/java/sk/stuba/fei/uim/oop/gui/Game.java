@@ -35,9 +35,14 @@ public class Game {
         slider.setSnapToTicks(true);
         slider.addChangeListener(logic);
 
+        JPanel labelPanel = new JPanel();
+        labelPanel.add(logic.getLevelLabel());
+        labelPanel.add(logic.getBoardSizeLabel());
+        labelPanel.setLayout(new BoxLayout(labelPanel,BoxLayout.X_AXIS));
+
         JPanel sidePanel = new JPanel();
         sidePanel.setLayout(new GridLayout(2, 2));
-        sidePanel.add(logic.getLevelLabel());
+        sidePanel.add(labelPanel);
         sidePanel.add(slider);
         sidePanel.add(checkWinButton);
         sidePanel.add(resetButton);
