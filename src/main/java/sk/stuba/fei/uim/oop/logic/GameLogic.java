@@ -15,8 +15,8 @@ import java.awt.event.MouseEvent;
 
 public class GameLogic extends UniversalAdapter {
 
-    private Tile lastHighlightedTile;
     public static final int INITIAL_BOARD_SIZE = 8;
+    private Tile lastHighlightedTile;
     private final JFrame frame;
     private GameBoard gameBoard;
     @Getter
@@ -24,9 +24,8 @@ public class GameLogic extends UniversalAdapter {
     @Getter
     private final JLabel boardSizeLabel;
     private int level;
-
-    JButton resetButton;
-    JButton checkWinButton;
+    private final JButton resetButton;
+    private final JButton checkWinButton;
     @Getter
     private int currentBoardSize;
 
@@ -36,7 +35,7 @@ public class GameLogic extends UniversalAdapter {
         this.checkWinButton = checkWinButton;
         this.currentBoardSize = INITIAL_BOARD_SIZE;
         this.initializeNewBoard(this.currentBoardSize);
-        this.frame.add( this.gameBoard,BorderLayout.CENTER);
+        this.frame.add(this.gameBoard, BorderLayout.CENTER);
         this.level = 1;
         this.levelLabel = new JLabel();
         this.boardSizeLabel = new JLabel();
@@ -46,19 +45,19 @@ public class GameLogic extends UniversalAdapter {
         this.setLevelLabelText();
     }
 
-    private void setLevelLabelText(){
-        this.levelLabel.setText("Level: "+level);
+    private void setLevelLabelText() {
+        this.levelLabel.setText("Level: " + level);
     }
 
-    private void setBoardSizeLabel(){
-        this.boardSizeLabel.setText("Board size: "+getCurrentBoardSize()+"x"+getCurrentBoardSize());
+    private void setBoardSizeLabel() {
+        this.boardSizeLabel.setText("Board size: " + getCurrentBoardSize() + "x" + getCurrentBoardSize());
     }
 
 
     private void gameRestart() {
         this.frame.remove(this.gameBoard);
         this.initializeNewBoard(this.currentBoardSize);
-        this.frame.add( this.gameBoard,BorderLayout.CENTER);
+        this.frame.add(this.gameBoard, BorderLayout.CENTER);
         setLevelLabelText();
         setBoardSizeLabel();
         this.frame.revalidate();
@@ -85,24 +84,25 @@ public class GameLogic extends UniversalAdapter {
         this.frame.requestFocusInWindow();
     }
 
-    public void checkWin(){
-        if(lastHighlightedTile!=null) {
+    private
+    void checkWin() {
+        if (lastHighlightedTile != null) {
             this.lastHighlightedTile.setHighlight(false);
         }
-        if(gameBoard.checkWin()){
+        if (gameBoard.checkWin()) {
             JOptionPane.showMessageDialog(null, "YOU WIN!");
             level++;
             gameRestart();
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "TRY HARDER");
-            this.gameBoard.resetCorrectPostion();
+            this.gameBoard.resetCorrectPosition();
             this.gameBoard.repaint();
         }
 
     }
+
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mousePressed(MouseEvent e) {
         Component current = this.gameBoard.getComponentAt(e.getX(), e.getY());
         if (!(current instanceof Tile)) {
             return;
@@ -117,19 +117,19 @@ public class GameLogic extends UniversalAdapter {
     public void mouseMoved(MouseEvent e) {
         Component current = this.gameBoard.getComponentAt(e.getX(), e.getY());
         if (!(current instanceof Tile)) {
-            if(lastHighlightedTile!=null){
+            if (lastHighlightedTile != null) {
                 lastHighlightedTile.setHighlight(false);
             }
             return;
         }
 
-        if(lastHighlightedTile==null){
+        if (lastHighlightedTile == null) {
             lastHighlightedTile = ((Tile) current);
             lastHighlightedTile.setHighlight(true);
             return;
         }
 
-        if(!lastHighlightedTile.equals(current)){
+        if (!lastHighlightedTile.equals(current)) {
             lastHighlightedTile.setHighlight(false);
             lastHighlightedTile = ((Tile) current);
             lastHighlightedTile.setHighlight(true);
@@ -142,7 +142,7 @@ public class GameLogic extends UniversalAdapter {
 
     @Override
     public void mouseExited(MouseEvent e) {
-        if(lastHighlightedTile!=null){
+        if (lastHighlightedTile != null) {
             lastHighlightedTile.setHighlight(false);
             lastHighlightedTile = null;
             this.gameBoard.repaint();
@@ -151,9 +151,13 @@ public class GameLogic extends UniversalAdapter {
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        this.currentBoardSize = ((JSlider) e.getSource()).getValue();
+        JSlider source = (JSlider) e.getSource();
+        if (!source.getValueIsAdjusting()) {
+            return;
+        }
+        currentBoardSize = source.getValue();
         this.level = 1;
-        if(lastHighlightedTile!=null) {
+        if (lastHighlightedTile != null) {
             this.lastHighlightedTile.setHighlight(false);
         }
         this.gameRestart();
@@ -166,7 +170,7 @@ public class GameLogic extends UniversalAdapter {
         System.out.println(e);
         switch (e.getKeyCode()) {
             case KeyEvent.VK_R:
-                level=1;
+                level = 1;
                 this.gameRestart();
                 break;
             case KeyEvent.VK_ESCAPE:

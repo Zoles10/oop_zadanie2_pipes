@@ -49,7 +49,7 @@ public class Tile extends JPanel {
         return correctTileState == currentTileState;
     }
 
-
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (highlight) {
@@ -62,10 +62,10 @@ public class Tile extends JPanel {
         }
     }
     public void switchCurrentTileState(){
-
+        this.currentTileState = TileState.EMPTY;
     }
 
     public void setCurrentTileStateRandom(){
-
+        this.currentTileState = TileState.EMPTY;
     }
 }

@@ -1,25 +1,29 @@
 package sk.stuba.fei.uim.oop.board;
 
+import lombok.Getter;
 import sk.stuba.fei.uim.oop.tile.*;
 
 import java.awt.*;
 import javax.swing.*;
-import  java.util.Random;
+import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 public class GameBoard extends JPanel {
+    @Getter
     private final int boardSize;
-    private final  Tile[][] board;
+    private final Tile[][] board;
+    @Getter
     private final int start;
+    @Getter
     private final int end;
     private final Random rand;
-    Stack<Tile> path;
+    private final Stack<Tile> path;
 
     public GameBoard(int boardSize) {
         this.path = new Stack<>();
-        this.boardSize=boardSize;
+        this.boardSize = boardSize;
         this.rand = new Random();
         this.start = rand.nextInt(boardSize);
         this.end = rand.nextInt(boardSize);
@@ -31,16 +35,14 @@ public class GameBoard extends JPanel {
 
     private void initializeBoard(int boardSize) {
         this.setLayout(new GridLayout(boardSize, boardSize));
-
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
-                    this.board[i][j] = new Tile(i, j, boardSize);
-                    this.board[i][j].setCurrentTileState(TileState.EMPTY);
-                    this.board[i][j].setCorrectTileState(TileState.EMPTY);
+                this.board[i][j] = new Tile(i, j, boardSize);
+                this.board[i][j].setCurrentTileState(TileState.EMPTY);
+                this.board[i][j].setCorrectTileState(TileState.EMPTY);
             }
         }
-        createPath(0,getStart(),getBoardSize()-1,getEnd());
-
+        createPath(0, getStart(), getBoardSize() - 1, getEnd());
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 this.add(this.board[i][j]);
@@ -48,56 +50,38 @@ public class GameBoard extends JPanel {
         }
     }
 
-
-    public int getBoardSize(){
-        return this.boardSize;
-    }
-
-    public List<Tile> getNeighbors(Tile currentTile){
-
+    private List<Tile> getNeighbors(Tile currentTile) {
         java.util.List<Tile> neighbors = new ArrayList<>();
-
-        if(currentTile.getPosX()-1 >= 0){
-            neighbors.add(board[currentTile.getPosY()][currentTile.getPosX()-1]);
+        if (currentTile.getPosX() - 1 >= 0) {
+            neighbors.add(board[currentTile.getPosY()][currentTile.getPosX() - 1]);
         }
-        if(currentTile.getPosX()+1 < boardSize){
-            neighbors.add(board[currentTile.getPosY()][currentTile.getPosX()+1]);
+        if (currentTile.getPosX() + 1 < boardSize) {
+            neighbors.add(board[currentTile.getPosY()][currentTile.getPosX() + 1]);
         }
-        if(currentTile.getPosY()-1 >= 0){
-            neighbors.add(board[currentTile.getPosY()-1][currentTile.getPosX()]);
+        if (currentTile.getPosY() - 1 >= 0) {
+            neighbors.add(board[currentTile.getPosY() - 1][currentTile.getPosX()]);
         }
-        if(currentTile.getPosY()+1 < boardSize){
-            neighbors.add(board[currentTile.getPosY()+1][currentTile.getPosX()]);
+        if (currentTile.getPosY() + 1 < boardSize) {
+            neighbors.add(board[currentTile.getPosY() + 1][currentTile.getPosX()]);
         }
         return neighbors;
     }
 
-    public int getStart() {
-        return start;
-    }
-
-    public int getEnd() {
-        return end;
-    }
-
-    public void createPath(int startX, int startY, int endX, int endY) {
-        Valve startTile = new Valve(startY,startX,boardSize);
-        Valve endTile = new Valve(endY,endX,boardSize);
+    private void createPath(int startX, int startY, int endX, int endY) {
+        Valve startTile = new Valve(startY, startX, boardSize);
+        Valve endTile = new Valve(endY, endX, boardSize);
         board[startY][startX] = startTile;
         board[endY][endX] = endTile;
-
         startTile.setVisited(true);
         path.push(startTile);
-
         while (!path.empty()) {
             Tile currentTile = path.peek();
             if (currentTile == endTile) {
                 path.push(currentTile);
                 highlightPath();
-                setValves(startTile,endTile);
+                setValves(startTile, endTile);
                 return;
             }
-
             List<Tile> neighbors = getNeighbors(currentTile);
             List<Tile> unvisitedNeighbors = new ArrayList<>();
             for (Tile neighbor : neighbors) {
@@ -105,7 +89,6 @@ public class GameBoard extends JPanel {
                     unvisitedNeighbors.add(neighbor);
                 }
             }
-
             if (!unvisitedNeighbors.isEmpty()) {
                 Tile nextTile = unvisitedNeighbors.get(new Random().nextInt(unvisitedNeighbors.size()));
                 nextTile.setVisited(true);
@@ -121,7 +104,6 @@ public class GameBoard extends JPanel {
             Tile currentTile = path.get(i);
             Tile prevTile = path.get(i - 1);
             Tile nextTile = path.get(i + 1);
-
             int leftCount = 0;
             int rightCount = 0;
             int topCount = 0;
@@ -140,9 +122,8 @@ public class GameBoard extends JPanel {
                     rightCount++;
                 }
             }
-
-            if (currentTile.getPosX() == nextTile.getPosX()) {
-                if (currentTile.getPosY() > nextTile.getPosY()) {
+            if (currentTile.getPosX() == nextTile.getPosX() ) {
+                if (currentTile.getPosY() > nextTile.getPosY() ) {
                     topCount++;
                 } else {
                     bottomCount++;
@@ -153,13 +134,11 @@ public class GameBoard extends JPanel {
                 } else {
                     rightCount++;
                 }
-
             }
-            if(currentTile instanceof Valve){
+            if (currentTile instanceof Valve) {
                 continue;
             }
-
-            setNewTile(currentTile,leftCount,rightCount,topCount,bottomCount);
+            setNewTile(currentTile, leftCount, rightCount, topCount, bottomCount);
         }
 
     }
@@ -194,14 +173,13 @@ public class GameBoard extends JPanel {
     }
 
 
-    public boolean checkWin(){
-        for(Tile tile : path){
-            if(tile instanceof Valve ){
+    public boolean checkWin() {
+        for (Tile tile : path) {
+            if (tile instanceof Valve) {
                 continue;
             }
-            if(!tile.checkCorrectShape()){
+            if (!tile.checkCorrectShape()) {
                 this.repaint();
-                System.out.println("X: "+tile.getPosX()+" Y:"+tile.getPosY());
                 return false;
             }
             tile.setCorrectPosition(true);
@@ -210,50 +188,42 @@ public class GameBoard extends JPanel {
         return true;
     }
 
-    public void resetCorrectPostion(){
-        for(Tile tile : path){
-            if(tile instanceof Valve ){
+    public void resetCorrectPosition() {
+        for (Tile tile : path) {
+            if (tile instanceof Valve) {
                 continue;
             }
-            if(tile.isCorrectPosition()){
+            if (tile.isCorrectPosition()) {
                 tile.setCorrectPosition(false);
             }
         }
         this.repaint();
     }
 
-    public void setValves(Tile startTile, Tile endTile){
-        Tile firstPipe = path.get(path.indexOf(startTile)+1);
-
-        if(startTile.getPosX() == firstPipe.getPosX() && startTile.getPosY() < firstPipe.getPosY()){
-            startTile.setCorrectTileState(TileState.VALVE_BOTTOM);
-            startTile.setCurrentTileState(TileState.VALVE_BOTTOM);
-        }
-        if(startTile.getPosX() == firstPipe.getPosX() && startTile.getPosY() > firstPipe.getPosY()){
-            startTile.setCorrectTileState(TileState.VALVE_TOP);
-            startTile.setCurrentTileState(TileState.VALVE_TOP);
-        }
-        if(startTile.getPosX() < firstPipe.getPosX() && startTile.getPosY() == firstPipe.getPosY()){
-            startTile.setCorrectTileState(TileState.VALVE_RIGHT);
-            startTile.setCurrentTileState(TileState.VALVE_RIGHT);
-        }
-
-        Tile lastPipe = path.get(path.indexOf(endTile)-1);
-
-        if(endTile.getPosX() == lastPipe.getPosX() && endTile.getPosY() < lastPipe.getPosY()){
-            endTile.setCorrectTileState(TileState.VALVE_BOTTOM);
-            endTile.setCurrentTileState(TileState.VALVE_BOTTOM);
-        }
-        if(endTile.getPosX() == lastPipe.getPosX() && endTile.getPosY() > lastPipe.getPosY()){
-            endTile.setCorrectTileState(TileState.VALVE_TOP);
-            endTile.setCurrentTileState(TileState.VALVE_TOP);
-        }
-        if(endTile.getPosX() > lastPipe.getPosX() && endTile.getPosY() == lastPipe.getPosY()){
-            endTile.setCorrectTileState(TileState.VALVE_LEFT);
-            endTile.setCurrentTileState(TileState.VALVE_LEFT);
-        }
-
+    private void setValves(Tile startTile, Tile endTile) {
+        Tile firstPipe = path.get(path.indexOf(startTile) + 1);
+        Tile lastPipe = path.get(path.indexOf(endTile) - 1);
+        setValve(startTile, firstPipe);
+        setValve(endTile, lastPipe);
     }
 
+    private void setValve(Tile valve, Tile nextPipe) {
+        if (valve.getPosX() == nextPipe.getPosX() && valve.getPosY() < nextPipe.getPosY()) {
+            valve.setCorrectTileState(TileState.VALVE_BOTTOM);
+            valve.setCurrentTileState(TileState.VALVE_BOTTOM);
+        }
+        if (valve.getPosX() == nextPipe.getPosX() && valve.getPosY() > nextPipe.getPosY()) {
+            valve.setCorrectTileState(TileState.VALVE_TOP);
+            valve.setCurrentTileState(TileState.VALVE_TOP);
+        }
+        if (valve.getPosX() < nextPipe.getPosX() && valve.getPosY() == nextPipe.getPosY()) {
+            valve.setCorrectTileState(TileState.VALVE_RIGHT);
+            valve.setCurrentTileState(TileState.VALVE_RIGHT);
+        }
+        if (valve.getPosX() > nextPipe.getPosX() && valve.getPosY() == nextPipe.getPosY()) {
+            valve.setCorrectTileState(TileState.VALVE_LEFT);
+            valve.setCurrentTileState(TileState.VALVE_LEFT);
+        }
+    }
 
 }

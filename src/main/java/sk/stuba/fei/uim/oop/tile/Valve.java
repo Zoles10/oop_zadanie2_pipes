@@ -7,15 +7,6 @@ public class Valve extends Tile {
         super(y, x, boardSize);
     }
 
-    @Override
-    public void switchCurrentTileState() {
-
-    }
-
-    @Override
-    public void setCurrentTileStateRandom() {
-
-    }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 

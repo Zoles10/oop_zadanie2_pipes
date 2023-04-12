@@ -7,10 +7,8 @@ import java.util.Hashtable;
 import javax.swing.*;
 
 public class Game {
-    int boardSize;
 
     public Game() {
-        boardSize = 8;
         JFrame frame = new JFrame("Water Pipes : The Action Game ");
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,6 +23,7 @@ public class Game {
 
         JSlider slider = new JSlider(8, 12, 8);
         slider.setMajorTickSpacing(2);
+        slider.setMinorTickSpacing(2);
         slider.setPaintTicks(true);
         Hashtable<Integer, JLabel> labelTable = new Hashtable<>();
         labelTable.put(8, new JLabel("8"));
@@ -38,7 +37,7 @@ public class Game {
         JPanel labelPanel = new JPanel();
         labelPanel.add(logic.getLevelLabel());
         labelPanel.add(logic.getBoardSizeLabel());
-        labelPanel.setLayout(new BoxLayout(labelPanel,BoxLayout.X_AXIS));
+        labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.X_AXIS));
 
         JPanel sidePanel = new JPanel();
         sidePanel.setLayout(new GridLayout(2, 2));

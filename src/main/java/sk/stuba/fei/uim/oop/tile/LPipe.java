@@ -27,6 +27,7 @@ public class LPipe extends Tile {
         this.currentTileState = LStates[currentIndex];
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (this.currentTileState.equals(TileState.L_PIPE_DOWN_RIGHT)) {
