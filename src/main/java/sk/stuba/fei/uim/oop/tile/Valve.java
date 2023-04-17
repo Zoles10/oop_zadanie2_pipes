@@ -15,16 +15,16 @@ public class Valve extends Tile {
         int tileHalf = tileSize / 2;
         int tileQuarter = tileSize / 4;
 
-        if(correctTileState.equals(TileState.VALVE_TOP)) {
+        if(currentTileState.equals(TileState.VALVE_TOP)) {
             g.fillRect(tileQuarter, 0, tileHalf, tileSize*3/4);
         }
-        if(correctTileState.equals(TileState.VALVE_BOTTOM)) {
+        if(currentTileState.equals(TileState.VALVE_BOTTOM)) {
             g.fillRect(tileQuarter, tileQuarter, tileHalf, tileSize);
         }
-        if(correctTileState.equals(TileState.VALVE_RIGHT)) {
+        if(currentTileState.equals(TileState.VALVE_RIGHT)) {
             g.fillRect(tileQuarter, tileQuarter, tileSize, tileHalf);
         }
-        if(correctTileState.equals(TileState.VALVE_LEFT)) {
+        if(currentTileState.equals(TileState.VALVE_LEFT)) {
             g.fillRect(0, tileQuarter, tileSize*3/4, tileHalf);
         }
 

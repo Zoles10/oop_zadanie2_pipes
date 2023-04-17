@@ -7,7 +7,6 @@ import java.util.Hashtable;
 import javax.swing.*;
 
 public class Game {
-
     public Game() {
         JFrame frame = new JFrame("Water Pipes : The Action Game ");
 

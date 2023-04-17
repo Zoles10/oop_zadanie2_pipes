@@ -14,9 +14,6 @@ public class Tile extends JPanel {
     protected final int posY;
     @Setter
     @Getter
-    protected TileState correctTileState;
-    @Setter
-    @Getter
     protected TileState currentTileState;
     @Setter
     @Getter
@@ -30,13 +27,17 @@ public class Tile extends JPanel {
     @Getter
     protected boolean correctPosition;
 
+    @Getter
+    protected PipeDirections pipeDirections;
+
     public Tile(int y, int x, int boardSize) {
         this.posX = x;
         this.posY = y;
         this.rand = new Random();
         this.highlight = false;
         this.correctPosition = false;
-        tileSize = 800 / boardSize;
+        this.tileSize = 800 / boardSize;
+        this.pipeDirections = new PipeDirections();
         this.setBorder(BorderFactory.createLineBorder(Color.GRAY));
     }
 
@@ -45,9 +46,6 @@ public class Tile extends JPanel {
         return new Dimension(tileSize, tileSize);
     }
 
-    public boolean checkCorrectShape() {
-        return correctTileState == currentTileState;
-    }
 
     @Override
     public void paintComponent(Graphics g) {
@@ -68,4 +66,6 @@ public class Tile extends JPanel {
     public void setCurrentTileStateRandom(){
         this.currentTileState = TileState.EMPTY;
     }
+
+
 }

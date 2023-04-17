@@ -19,12 +19,14 @@ public class LPipe extends Tile {
             int currentIndex = Arrays.asList(LStates).indexOf(this.currentTileState);
             int nextIndex = (currentIndex + 1) % LStates.length;
             this.currentTileState = LStates[nextIndex];
+            this.pipeDirections.setDirections(this.currentTileState);
 
     }
     @Override
     public void setCurrentTileStateRandom() {
         int currentIndex = rand.nextInt(4);
         this.currentTileState = LStates[currentIndex];
+        this.pipeDirections.setDirections(this.currentTileState);
     }
 
     @Override
@@ -44,4 +46,6 @@ public class LPipe extends Tile {
             g.fillRect(0, tileSize/4, tileSize / 2 + tileSize/4, tileSize / 2);
         }
     }
+
+
 }
