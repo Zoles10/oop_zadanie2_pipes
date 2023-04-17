@@ -23,6 +23,8 @@ public class Tile extends JPanel {
     @Setter
     @Getter
     protected boolean highlight;
+
+
     @Setter
     @Getter
     protected boolean correctPosition;
