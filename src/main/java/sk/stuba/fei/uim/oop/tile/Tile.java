@@ -23,12 +23,9 @@ public class Tile extends JPanel {
     @Setter
     @Getter
     protected boolean highlight;
-
-
     @Setter
     @Getter
     protected boolean correctPosition;
-
     @Getter
     protected PipeDirections pipeDirections;
 
@@ -54,18 +51,16 @@ public class Tile extends JPanel {
         super.paintComponent(g);
         if (highlight) {
             this.setBackground(Color.LIGHT_GRAY);
-        }
-        if (correctPosition) {
-            this.setBackground(Color.GREEN);
-        } else if(!highlight) {
+        } else  {
             this.setBackground(Color.WHITE);
         }
     }
-    public void switchCurrentTileState(){
+
+    public void switchCurrentTileState() {
         this.currentTileState = TileState.EMPTY;
     }
 
-    public void setCurrentTileStateRandom(){
+    public void setCurrentTileStateRandom() {
         this.currentTileState = TileState.EMPTY;
     }
 

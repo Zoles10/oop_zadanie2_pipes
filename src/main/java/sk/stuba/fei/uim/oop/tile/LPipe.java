@@ -35,15 +35,38 @@ public class LPipe extends Tile {
         if (this.currentTileState.equals(TileState.L_PIPE_DOWN_RIGHT)) {
             g.fillRect(tileSize/4, tileSize/4, tileSize / 2, tileSize);
             g.fillRect(tileSize/4, tileSize/4, tileSize, tileSize / 2);
+            if(correctPosition){
+                g.setColor(Color.BLUE);
+                g.fillRect(tileSize * 3 / 8, tileSize * 3 / 8, tileSize / 4, tileSize);
+                g.fillRect(tileSize * 3 / 8, tileSize * 3 / 8, tileSize, tileSize / 4);
+            }
         } else if (this.currentTileState.equals(TileState.L_PIPE_DOWN_LEFT)) {
             g.fillRect(tileSize/4, tileSize/4, tileSize / 2, tileSize);
             g.fillRect(0, tileSize/4, tileSize / 2, tileSize / 2);
+
+            if(correctPosition){
+                g.setColor(Color.BLUE);
+                g.fillRect(tileSize * 3 / 8, tileSize * 3 / 8, tileSize / 4, tileSize);
+                g.fillRect(0, tileSize * 3 / 8, tileSize * 5 / 8, tileSize / 4);
+            }
         } else if (this.currentTileState.equals(TileState.L_PIPE_TOP_RIGHT)) {
             g.fillRect(tileSize/4, 0, tileSize / 2, tileSize / 2);
             g.fillRect(tileSize/4, tileSize/4, tileSize, tileSize / 2);
+
+            if(correctPosition){
+                g.setColor(Color.BLUE);
+                g.fillRect(tileSize * 3 / 8, 0, tileSize / 4, tileSize * 5 / 8);
+                g.fillRect(tileSize * 3 / 8, tileSize * 3 / 8, tileSize, tileSize / 4);
+            }
         } else if (this.currentTileState.equals(TileState.L_PIPE_TOP_LEFT)) {
             g.fillRect(tileSize/4, 0, tileSize / 2, tileSize / 2);
             g.fillRect(0, tileSize/4, tileSize / 2 + tileSize/4, tileSize / 2);
+
+            if(correctPosition){
+                g.setColor(Color.BLUE);
+                g.fillRect(tileSize * 3 / 8, 0, tileSize / 4, tileSize * 5 / 8);
+                g.fillRect(0, tileSize * 3 / 8, tileSize * 5 / 8, tileSize / 4);
+            }
         }
     }
 

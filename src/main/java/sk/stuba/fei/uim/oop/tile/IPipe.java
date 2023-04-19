@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 public class IPipe extends Tile {
     TileState[] IStates;
+
     public IPipe(int y, int x, int boardSize) {
         super(y, x, boardSize);
         IStates = new TileState[]{
@@ -13,7 +14,7 @@ public class IPipe extends Tile {
     }
 
     @Override
-    public void switchCurrentTileState(){
+    public void switchCurrentTileState() {
         int currentIndex = Arrays.asList(IStates).indexOf(this.currentTileState);
         int nextIndex = (currentIndex + 1) % IStates.length;
         this.currentTileState = IStates[nextIndex];
@@ -23,17 +24,27 @@ public class IPipe extends Tile {
 
     @Override
     public void setCurrentTileStateRandom() {
-            int currentIndex = rand.nextInt(2);
-            this.currentTileState = IStates[currentIndex];
-              this.pipeDirections.setDirections(this.currentTileState);
+        int currentIndex = rand.nextInt(2);
+        this.currentTileState = IStates[currentIndex];
+        this.pipeDirections.setDirections(this.currentTileState);
     }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-         if (this.currentTileState.equals(TileState.I_PIPE_TOP_DOWN)) {
-            g.fillRect(tileSize/4, 0, tileSize / 2, tileSize);
+
+        if (this.currentTileState.equals(TileState.I_PIPE_TOP_DOWN)) {
+            g.fillRect(tileSize / 4, 0, tileSize / 2, tileSize);
+            if(correctPosition){
+                g.setColor(Color.BLUE);
+                g.fillRect(tileSize * 3 / 8, 0, tileSize / 4, tileSize);
+            }
         } else if (this.currentTileState.equals(TileState.I_PIPE_LEFT_RIGHT)) {
-            g.fillRect(0, tileSize/4, tileSize, tileSize / 2);
+            g.fillRect(0, tileSize / 4, tileSize, tileSize / 2);
+            if(correctPosition){
+                g.setColor(Color.BLUE);
+                g.fillRect(0, tileSize * 3 / 8, tileSize, tileSize / 4);
+            }
         }
 
     }

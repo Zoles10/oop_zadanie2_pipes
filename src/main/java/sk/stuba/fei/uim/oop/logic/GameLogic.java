@@ -84,8 +84,7 @@ public class GameLogic extends UniversalAdapter {
         this.frame.requestFocusInWindow();
     }
 
-    private
-    void checkWin() {
+    private void checkWin() {
         if (lastHighlightedTile != null) {
             this.lastHighlightedTile.setHighlight(false);
         }
@@ -94,7 +93,7 @@ public class GameLogic extends UniversalAdapter {
             level++;
             gameRestart();
         } else {
-            JOptionPane.showMessageDialog(null, "TRY HARDER");
+            JOptionPane.showMessageDialog(null, "Path is not correct! Try again!");
             this.gameBoard.resetCorrectPosition();
             this.gameBoard.repaint();
         }
@@ -104,7 +103,7 @@ public class GameLogic extends UniversalAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         Component current = this.gameBoard.getComponentAt(e.getX(), e.getY());
-        if (!(current instanceof Tile)) {
+        if (!(current instanceof Tile) || current instanceof Valve) {
             return;
         }
 
