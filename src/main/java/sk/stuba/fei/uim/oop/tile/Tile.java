@@ -19,7 +19,7 @@ public class Tile extends JPanel {
     @Getter
     protected boolean visited;
     protected int tileSize;
-    Random rand;
+    protected Random rand;
     @Setter
     @Getter
     protected boolean highlight;

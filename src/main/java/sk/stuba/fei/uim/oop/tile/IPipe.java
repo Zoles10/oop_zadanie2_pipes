@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.Arrays;
 
 public class IPipe extends Tile {
-    TileState[] IStates;
+    private final TileState[] IStates;
 
     public IPipe(int y, int x, int boardSize) {
         super(y, x, boardSize);

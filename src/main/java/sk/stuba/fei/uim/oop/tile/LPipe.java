@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.Arrays;
 
 public class LPipe extends Tile {
-    TileState[] LStates;
+    private final TileState[] LStates;
     public LPipe(int y, int x, int boardSize) {
         super(y, x, boardSize);
         this.LStates = new TileState[]{

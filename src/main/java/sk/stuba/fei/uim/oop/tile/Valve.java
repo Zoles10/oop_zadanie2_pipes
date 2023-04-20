@@ -16,16 +16,32 @@ public class Valve extends Tile {
         int tileQuarter = tileSize / 4;
 
         if (currentTileState.equals(TileState.VALVE_TOP)) {
-            g.fillRect(tileQuarter, 0, tileHalf, tileSize * 3 / 4);
+             g.fillRect(tileQuarter, 0, tileHalf, tileHalf);
+            if(correctPosition){
+                g.setColor(Color.BLUE);
+                g.fillRect(tileSize *3 / 8, 0,tileQuarter, tileHalf);
+            }
         }
         if (currentTileState.equals(TileState.VALVE_BOTTOM)) {
             g.fillRect(tileQuarter, tileQuarter, tileHalf, tileSize);
+            if(correctPosition){
+                g.setColor(Color.BLUE);
+                g.fillRect(tileSize *3 / 8, tileHalf,tileQuarter, tileHalf);
+            }
         }
         if (currentTileState.equals(TileState.VALVE_RIGHT)) {
             g.fillRect(tileQuarter, tileQuarter, tileSize, tileHalf);
+            if(correctPosition){
+                g.setColor(Color.BLUE);
+                g.fillRect(tileHalf, tileSize *3 / 8,tileSize, tileQuarter);
+            }
         }
         if (currentTileState.equals(TileState.VALVE_LEFT)) {
-            g.fillRect(0, tileQuarter, tileSize * 3 / 4, tileHalf);
+            g.fillRect(0, tileQuarter, tileQuarter, tileHalf);
+            if(correctPosition){
+                g.setColor(Color.BLUE);
+                g.fillRect(0, tileSize *3 / 8,tileSize *3 / 8, tileQuarter);
+            }
         }
 
         Graphics2D g2d = (Graphics2D) g.create();

@@ -6,16 +6,16 @@ import lombok.Setter;
 public class PipeDirections {
     @Getter
     @Setter
-    boolean top;
+    private boolean top;
     @Getter
     @Setter
-    boolean right;
+    private boolean right;
     @Getter
     @Setter
-    boolean bottom;
+    private boolean bottom;
     @Getter
     @Setter
-    boolean left;
+    private boolean left;
 
     public PipeDirections() {
         this.top = false;
