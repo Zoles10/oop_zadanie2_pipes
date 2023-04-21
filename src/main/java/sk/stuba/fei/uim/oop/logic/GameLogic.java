@@ -91,19 +91,18 @@ public class GameLogic extends UniversalAdapter {
         if (gameBoard.checkWin()) {
             String[] options = {"Continue", "Quit"};
             int choice = JOptionPane.showOptionDialog(null, "You completed the level! Do you wish to continue to the next one, or quit playing?", "Level Complete", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-
             if (choice == JOptionPane.YES_OPTION) {
                 level++;
                 gameRestart();
             } else if (choice == JOptionPane.NO_OPTION) {
                 this.frame.dispose();
+                System.exit(0);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Path is not correct! Try again!");
             this.gameBoard.resetCorrectPosition();
             this.gameBoard.repaint();
         }
-
     }
 
     @Override
@@ -116,7 +115,6 @@ public class GameLogic extends UniversalAdapter {
         current.repaint();
     }
 
-
     @Override
     public void mouseMoved(MouseEvent e) {
         Component current = this.gameBoard.getComponentAt(e.getX(), e.getY());
@@ -126,20 +124,17 @@ public class GameLogic extends UniversalAdapter {
             }
             return;
         }
-
         if (lastHighlightedTile == null) {
             lastHighlightedTile = ((Tile) current);
             lastHighlightedTile.setHighlight(true);
             return;
         }
-
         if (!lastHighlightedTile.equals(current)) {
             lastHighlightedTile.setHighlight(false);
             lastHighlightedTile = ((Tile) current);
             lastHighlightedTile.setHighlight(true);
             return;
         }
-
         lastHighlightedTile.setHighlight(true);
         this.gameBoard.repaint();
     }
@@ -178,6 +173,7 @@ public class GameLogic extends UniversalAdapter {
                 break;
             case KeyEvent.VK_ESCAPE:
                 this.frame.dispose();
+                System.exit(0);
                 break;
             case KeyEvent.VK_ENTER:
                 this.checkWin();

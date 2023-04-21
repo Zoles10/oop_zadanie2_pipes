@@ -111,7 +111,6 @@ public class GameBoard extends JPanel {
             int rightCount = 0;
             int topCount = 0;
             int bottomCount = 0;
-
             Tile[] neighbourTiles = {prevTile, nextTile};
             for (Tile neighbourTile : neighbourTiles) {
                 if (currentTile.getPosX() == neighbourTile.getPosX()) {
@@ -128,7 +127,6 @@ public class GameBoard extends JPanel {
                     }
                 }
             }
-
             if (currentTile instanceof Valve) {
                 continue;
             }
