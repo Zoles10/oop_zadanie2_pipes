@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 public class LPipe extends Tile {
     private final TileState[] LStates;
+
     public LPipe(int y, int x, int boardSize) {
         super(y, x, boardSize);
         this.LStates = new TileState[]{
@@ -15,13 +16,14 @@ public class LPipe extends Tile {
     }
 
     @Override
-    public void switchCurrentTileState(){
-            int currentIndex = Arrays.asList(LStates).indexOf(this.currentTileState);
-            int nextIndex = (currentIndex + 1) % LStates.length;
-            this.currentTileState = LStates[nextIndex];
-            this.pipeDirections.setDirections(this.currentTileState);
+    public void switchCurrentTileState() {
+        int currentIndex = Arrays.asList(LStates).indexOf(this.currentTileState);
+        int nextIndex = (currentIndex + 1) % LStates.length;
+        this.currentTileState = LStates[nextIndex];
+        this.pipeDirections.setDirections(this.currentTileState);
 
     }
+
     @Override
     public void setCurrentTileStateRandom() {
         int currentIndex = rand.nextInt(4);
@@ -33,39 +35,32 @@ public class LPipe extends Tile {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (this.currentTileState.equals(TileState.L_PIPE_DOWN_RIGHT)) {
-            g.fillRect(tileSize/4, tileSize/4, tileSize / 2, tileSize);
-            g.fillRect(tileSize/4, tileSize/4, tileSize, tileSize / 2);
-            if(correctPosition){
-                g.setColor(Color.BLUE);
-                g.fillRect(tileSize * 3 / 8, tileSize * 3 / 8, tileSize / 4, tileSize);
-                g.fillRect(tileSize * 3 / 8, tileSize * 3 / 8, tileSize, tileSize / 4);
+            paintLineBottom(g);
+            paintLineRight(g);
+            if (correctPosition) {
+                paintWaterBottom(g);
+                paintWaterRight(g);
             }
         } else if (this.currentTileState.equals(TileState.L_PIPE_DOWN_LEFT)) {
-            g.fillRect(tileSize/4, tileSize/4, tileSize / 2, tileSize);
-            g.fillRect(0, tileSize/4, tileSize / 2, tileSize / 2);
-
-            if(correctPosition){
-                g.setColor(Color.BLUE);
-                g.fillRect(tileSize * 3 / 8, tileSize * 3 / 8, tileSize / 4, tileSize);
-                g.fillRect(0, tileSize * 3 / 8, tileSize * 5 / 8, tileSize / 4);
+            paintLineLeft(g);
+            paintLineBottom(g);
+            if (correctPosition) {
+                paintWaterBottom(g);
+                paintWaterLeft(g);
             }
         } else if (this.currentTileState.equals(TileState.L_PIPE_TOP_RIGHT)) {
-            g.fillRect(tileSize/4, 0, tileSize / 2, tileSize / 2);
-            g.fillRect(tileSize/4, tileSize/4, tileSize, tileSize / 2);
-
-            if(correctPosition){
-                g.setColor(Color.BLUE);
-                g.fillRect(tileSize * 3 / 8, 0, tileSize / 4, tileSize * 5 / 8);
-                g.fillRect(tileSize * 3 / 8, tileSize * 3 / 8, tileSize, tileSize / 4);
+            paintLineRight(g);
+            paintLineTop(g);
+            if (correctPosition) {
+                paintWaterTop(g);
+                paintWaterRight(g);
             }
         } else if (this.currentTileState.equals(TileState.L_PIPE_TOP_LEFT)) {
-            g.fillRect(tileSize/4, 0, tileSize / 2, tileSize / 2);
-            g.fillRect(0, tileSize/4, tileSize / 2 + tileSize/4, tileSize / 2);
-
-            if(correctPosition){
-                g.setColor(Color.BLUE);
-                g.fillRect(tileSize * 3 / 8, 0, tileSize / 4, tileSize * 5 / 8);
-                g.fillRect(0, tileSize * 3 / 8, tileSize * 5 / 8, tileSize / 4);
+            paintLineLeft(g);
+            paintLineTop(g);
+            if (correctPosition) {
+                paintWaterTop(g);
+                paintWaterLeft(g);
             }
         }
     }

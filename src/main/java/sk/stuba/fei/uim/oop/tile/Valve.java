@@ -12,40 +12,36 @@ public class Valve extends Tile {
 
         g.setColor(Color.DARK_GRAY);
 
-        int tileHalf = tileSize / 2;
-        int tileQuarter = tileSize / 4;
-
         if (currentTileState.equals(TileState.VALVE_TOP)) {
-             g.fillRect(tileQuarter, 0, tileHalf, tileHalf);
-            if(correctPosition){
-                g.setColor(Color.BLUE);
-                g.fillRect(tileSize *3 / 8, 0,tileQuarter, tileHalf);
+            paintLineTop(g);
+            if (correctPosition) {
+                paintWaterTop(g);
             }
         }
         if (currentTileState.equals(TileState.VALVE_BOTTOM)) {
-            g.fillRect(tileQuarter, tileQuarter, tileHalf, tileSize);
-            if(correctPosition){
-                g.setColor(Color.BLUE);
-                g.fillRect(tileSize *3 / 8, tileHalf,tileQuarter, tileHalf);
+            paintLineBottom(g);
+            if (correctPosition) {
+                paintWaterBottom(g);
             }
         }
         if (currentTileState.equals(TileState.VALVE_RIGHT)) {
-            g.fillRect(tileQuarter, tileQuarter, tileSize, tileHalf);
-            if(correctPosition){
-                g.setColor(Color.BLUE);
-                g.fillRect(tileHalf, tileSize *3 / 8,tileSize, tileQuarter);
+            paintLineRight(g);
+            if (correctPosition) {
+                paintWaterRight(g);
             }
         }
         if (currentTileState.equals(TileState.VALVE_LEFT)) {
-            g.fillRect(0, tileQuarter, tileQuarter, tileHalf);
-            if(correctPosition){
-                g.setColor(Color.BLUE);
-                g.fillRect(0, tileSize *3 / 8,tileSize *3 / 8, tileQuarter);
+            paintLineLeft(g);
+            if (correctPosition) {
+                paintWaterLeft(g);
             }
         }
 
         Graphics2D g2d = (Graphics2D) g.create();
+        paintValve(g2d);
+    }
 
+    private void paintValve(Graphics2D g2d){
         int ovalSize = (tileSize / 10) * 8;
         int x = (tileSize - ovalSize) / 2;
         int y = (tileSize - ovalSize) / 2;

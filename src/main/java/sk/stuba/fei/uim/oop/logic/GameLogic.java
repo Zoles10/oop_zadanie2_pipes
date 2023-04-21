@@ -89,9 +89,15 @@ public class GameLogic extends UniversalAdapter {
             this.lastHighlightedTile.setHighlight(false);
         }
         if (gameBoard.checkWin()) {
-            JOptionPane.showMessageDialog(null, "YOU WIN!");
-            level++;
-            gameRestart();
+            String[] options = {"Continue", "Quit"};
+            int choice = JOptionPane.showOptionDialog(null, "You completed the level! Do you wish to continue to the next one, or quit playing?", "Level Complete", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+            if (choice == JOptionPane.YES_OPTION) {
+                level++;
+                gameRestart();
+            } else if (choice == JOptionPane.NO_OPTION) {
+                this.frame.dispose();
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Path is not correct! Try again!");
             this.gameBoard.resetCorrectPosition();
@@ -106,7 +112,6 @@ public class GameLogic extends UniversalAdapter {
         if (!(current instanceof Tile) || current instanceof Valve) {
             return;
         }
-
         ((Tile) current).switchCurrentTileState();
         current.repaint();
     }
@@ -166,7 +171,6 @@ public class GameLogic extends UniversalAdapter {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println(e);
         switch (e.getKeyCode()) {
             case KeyEvent.VK_R:
                 level = 1;

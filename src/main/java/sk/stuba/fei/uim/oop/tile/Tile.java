@@ -11,18 +11,18 @@ public class Tile extends JPanel {
     @Getter
     protected final int posX;
     @Getter
-    protected final int posY;
+    private final int posY;
     @Setter
     @Getter
     protected TileState currentTileState;
     @Setter
     @Getter
-    protected boolean visited;
+    private boolean visited;
     protected int tileSize;
     protected Random rand;
     @Setter
     @Getter
-    protected boolean highlight;
+    private boolean highlight;
     @Setter
     @Getter
     protected boolean correctPosition;
@@ -63,6 +63,44 @@ public class Tile extends JPanel {
     public void setCurrentTileStateRandom() {
         this.currentTileState = TileState.EMPTY;
     }
+    protected void paintLineLeft(Graphics g){
+        g.setColor(Color.DARK_GRAY);
+        g.fillRect(0, tileSize/4, tileSize / 2, tileSize / 2);
+    }
 
+    protected void paintLineRight(Graphics g){
+        g.setColor(Color.DARK_GRAY);
+        g.fillRect(tileSize / 4, tileSize/4, tileSize , tileSize / 2);
+    }
+
+    protected void paintLineTop(Graphics g){
+        g.setColor(Color.DARK_GRAY);
+        g.fillRect(tileSize / 4, 0, tileSize / 2, tileSize / 2 + tileSize / 4);
+    }
+
+    protected void paintLineBottom(Graphics g){
+        g.setColor(Color.DARK_GRAY);
+        g.fillRect(tileSize / 4, tileSize / 4, tileSize / 2, tileSize );
+    }
+
+    protected void paintWaterLeft(Graphics g){
+        g.setColor(Color.BLUE);
+        g.fillRect(0, tileSize * 3 / 8, tileSize * 5 / 8, tileSize / 4);
+    }
+
+    protected void paintWaterRight(Graphics g){
+        g.setColor(Color.BLUE);
+        g.fillRect(tileSize * 3 / 8, tileSize * 3 / 8, tileSize , tileSize / 4);
+    }
+
+    protected void paintWaterTop(Graphics g){
+        g.setColor(Color.BLUE);
+        g.fillRect(tileSize * 3 / 8, 0, tileSize / 4, tileSize * 5 / 8);
+    }
+
+    protected void paintWaterBottom(Graphics g){
+        g.setColor(Color.BLUE);
+        g.fillRect(tileSize * 3 / 8, tileSize * 3 / 8, tileSize / 4, tileSize);
+    }
 
 }

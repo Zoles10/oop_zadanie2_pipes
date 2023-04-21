@@ -32,21 +32,21 @@ public class IPipe extends Tile {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         if (this.currentTileState.equals(TileState.I_PIPE_TOP_DOWN)) {
-            g.fillRect(tileSize / 4, 0, tileSize / 2, tileSize);
-            if(correctPosition){
-                g.setColor(Color.BLUE);
-                g.fillRect(tileSize * 3 / 8, 0, tileSize / 4, tileSize);
+            paintLineTop(g);
+            paintLineBottom(g);
+            if (correctPosition) {
+                paintWaterTop(g);
+                paintWaterBottom(g);
             }
         } else if (this.currentTileState.equals(TileState.I_PIPE_LEFT_RIGHT)) {
-            g.fillRect(0, tileSize / 4, tileSize, tileSize / 2);
-            if(correctPosition){
-                g.setColor(Color.BLUE);
-                g.fillRect(0, tileSize * 3 / 8, tileSize, tileSize / 4);
+            paintLineLeft(g);
+            paintLineRight(g);
+            if (correctPosition) {
+                paintWaterLeft(g);
+                paintWaterRight(g);
             }
         }
-
     }
 
 }
