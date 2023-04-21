@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 public class LPipe extends Tile {
     private final TileState[] LStates;
-
     public LPipe(int y, int x, int boardSize) {
         super(y, x, boardSize);
         this.LStates = new TileState[]{
@@ -20,15 +19,16 @@ public class LPipe extends Tile {
         int currentIndex = Arrays.asList(LStates).indexOf(this.currentTileState);
         int nextIndex = (currentIndex + 1) % LStates.length;
         this.currentTileState = LStates[nextIndex];
-        this.pipeDirections.setDirections(this.currentTileState);
-
+        this.directions.clear();
+        setDirections(this.currentTileState);
     }
 
     @Override
     public void setCurrentTileStateRandom() {
         int currentIndex = rand.nextInt(4);
         this.currentTileState = LStates[currentIndex];
-        this.pipeDirections.setDirections(this.currentTileState);
+        this.directions.clear();
+        setDirections(currentTileState);
     }
 
     @Override
@@ -64,6 +64,4 @@ public class LPipe extends Tile {
             }
         }
     }
-
-
 }

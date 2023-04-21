@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Tile extends JPanel {
@@ -27,7 +28,7 @@ public class Tile extends JPanel {
     @Getter
     protected boolean correctPosition;
     @Getter
-    protected PipeDirections pipeDirections;
+    protected ArrayList<Directions> directions;
 
     public Tile(int y, int x, int boardSize) {
         this.posX = x;
@@ -36,7 +37,7 @@ public class Tile extends JPanel {
         this.highlight = false;
         this.correctPosition = false;
         this.tileSize = 800 / boardSize;
-        this.pipeDirections = new PipeDirections();
+        this.directions = new ArrayList<>();
         this.setBorder(BorderFactory.createLineBorder(Color.GRAY));
     }
 
@@ -45,7 +46,6 @@ public class Tile extends JPanel {
         return new Dimension(tileSize, tileSize);
     }
 
-
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -53,6 +53,38 @@ public class Tile extends JPanel {
             this.setBackground(Color.LIGHT_GRAY);
         } else  {
             this.setBackground(Color.WHITE);
+        }
+    }
+
+    public void setDirections(TileState tileState) {
+        directions.clear();
+        if (tileState.equals(TileState.I_PIPE_LEFT_RIGHT)) {
+            directions.add(Directions.LEFT);
+            directions.add(Directions.RIGHT);
+            System.out.println(directions.size());
+        } else if (tileState.equals(TileState.I_PIPE_TOP_DOWN)) {
+            directions.add(Directions.TOP);
+            directions.add(Directions.BOTTOM);
+        } else if (tileState.equals(TileState.L_PIPE_DOWN_LEFT)) {
+            directions.add(Directions.BOTTOM);
+            directions.add(Directions.LEFT);
+        } else if (tileState.equals(TileState.L_PIPE_DOWN_RIGHT)) {
+            directions.add(Directions.BOTTOM);
+            directions.add(Directions.RIGHT);
+        } else if (tileState.equals(TileState.L_PIPE_TOP_RIGHT)) {
+            directions.add(Directions.TOP);
+            directions.add(Directions.RIGHT);
+        } else if (tileState.equals(TileState.L_PIPE_TOP_LEFT)) {
+            directions.add(Directions.TOP);
+            directions.add(Directions.LEFT);
+        } else if (tileState.equals(TileState.VALVE_TOP)) {
+            directions.add(Directions.TOP);
+        } else if (tileState.equals(TileState.VALVE_BOTTOM)) {
+            directions.add(Directions.BOTTOM);
+        } else if (tileState.equals(TileState.VALVE_RIGHT)) {
+            directions.add(Directions.RIGHT);
+        } else if (tileState.equals(TileState.VALVE_LEFT)) {
+            directions.add(Directions.LEFT);
         }
     }
 
@@ -102,5 +134,4 @@ public class Tile extends JPanel {
         g.setColor(Color.BLUE);
         g.fillRect(tileSize * 3 / 8, tileSize * 3 / 8, tileSize / 4, tileSize);
     }
-
 }

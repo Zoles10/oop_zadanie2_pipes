@@ -50,15 +50,23 @@ public class GameBoard extends JPanel {
     }
 
     private List<Tile> getNeighbors(Tile currentTile) {
-        java.util.List<Tile> neighbors = new ArrayList<>();
+        ArrayList<Tile> neighbors = new ArrayList<>();
         Tile leftNeighbor = (currentTile.getPosX() > 0) ? board[currentTile.getPosY()][currentTile.getPosX() - 1] : null;
         Tile rightNeighbor = (currentTile.getPosX() < boardSize - 1) ? board[currentTile.getPosY()][currentTile.getPosX() + 1] : null;
         Tile topNeighbor = (currentTile.getPosY() > 0) ? board[currentTile.getPosY() - 1][currentTile.getPosX()] : null;
         Tile bottomNeighbor = (currentTile.getPosY() < boardSize - 1) ? board[currentTile.getPosY() + 1][currentTile.getPosX()] : null;
-        neighbors.add(leftNeighbor);
-        neighbors.add(rightNeighbor);
-        neighbors.add(topNeighbor);
-        neighbors.add(bottomNeighbor);
+        if (leftNeighbor != null) {
+            neighbors.add(leftNeighbor);
+        }
+        if (rightNeighbor != null) {
+            neighbors.add(rightNeighbor);
+        }
+        if (topNeighbor != null) {
+            neighbors.add(topNeighbor);
+        }
+        if (bottomNeighbor != null) {
+            neighbors.add(bottomNeighbor);
+        }
         return neighbors;
     }
 
@@ -126,33 +134,27 @@ public class GameBoard extends JPanel {
             }
             setNewTile(currentTile, leftCount, rightCount, topCount, bottomCount);
         }
-
     }
 
     private void setNewTile(Tile currentTile, int leftCount, int rightCount, int topCount, int bottomCount) {
         Tile newTile;
         if (leftCount == 1 && bottomCount == 1) {
             newTile = new LPipe(currentTile.getPosY(), currentTile.getPosX(), boardSize);
-            newTile.setCurrentTileState(TileState.L_PIPE_DOWN_LEFT);
         } else if (leftCount == 1 && topCount == 1) {
             newTile = new LPipe(currentTile.getPosY(), currentTile.getPosX(), boardSize);
-            newTile.setCurrentTileState(TileState.L_PIPE_TOP_LEFT);
         } else if (rightCount == 1 && bottomCount == 1) {
             newTile = new LPipe(currentTile.getPosY(), currentTile.getPosX(), boardSize);
-            newTile.setCurrentTileState(TileState.L_PIPE_DOWN_RIGHT);
         } else if (rightCount == 1 && topCount == 1) {
             newTile = new LPipe(currentTile.getPosY(), currentTile.getPosX(), boardSize);
-            newTile.setCurrentTileState(TileState.L_PIPE_TOP_RIGHT);
         } else if (leftCount + rightCount == 0 && (topCount > 0 || bottomCount > 0)) {
             newTile = new IPipe(currentTile.getPosY(), currentTile.getPosX(), boardSize);
-            newTile.setCurrentTileState(TileState.I_PIPE_TOP_DOWN);
         } else if (topCount + bottomCount == 0 && (leftCount > 0 || rightCount > 0)) {
             newTile = new IPipe(currentTile.getPosY(), currentTile.getPosX(), boardSize);
-            newTile.setCurrentTileState(TileState.I_PIPE_LEFT_RIGHT);
         } else {
             return;
         }
         newTile.setCurrentTileStateRandom();
+        newTile.setDirections(newTile.getCurrentTileState());
         this.board[newTile.getPosY()][newTile.getPosX()] = newTile;
         this.path.set(this.path.indexOf(currentTile), newTile);
         repaint();
@@ -161,35 +163,35 @@ public class GameBoard extends JPanel {
     public boolean checkWin() {
         Tile currentTile = path.get(0);
         Tile previousTile = null;
+        boolean neighbourFlag;
         while (true) {
-            List<Tile> neighbours = getNeighbors(currentTile);
-            List<Boolean> isNeighbourConnected = new ArrayList<>();
-            boolean isLeftConnected = (neighbours.get(0) != null && neighbours.get(0) != previousTile && neighbours.get(0).getPipeDirections().isRight() && currentTile.getPipeDirections().isLeft());
-            boolean isRightConnected = (neighbours.get(1) != null && neighbours.get(1) != previousTile && neighbours.get(1).getPipeDirections().isLeft() && currentTile.getPipeDirections().isRight());
-            boolean isTopConnected = (neighbours.get(2) != null && neighbours.get(2) != previousTile && neighbours.get(2).getPipeDirections().isBottom() && currentTile.getPipeDirections().isTop());
-            boolean isBottomConnected = (neighbours.get(3) != null && neighbours.get(3) != previousTile && neighbours.get(3).getPipeDirections().isTop() && currentTile.getPipeDirections().isBottom());
-            isNeighbourConnected.add(isLeftConnected);
-            isNeighbourConnected.add(isRightConnected);
-            isNeighbourConnected.add(isTopConnected);
-            isNeighbourConnected.add(isBottomConnected);
-
-            int neighbourIndex = 0;
-            for (Boolean isConnected : isNeighbourConnected) {
-                if (isConnected) {
-                    currentTile.setCorrectPosition(true);
-                    previousTile = currentTile;
-                    currentTile = neighbours.get(neighbourIndex);
-                    repaint();
-                    break;
-                }
-                neighbourIndex++;
-            }
-
             if (currentTile.equals(path.get(path.size() - 1))) {
                 currentTile.setCorrectPosition(true);
                 return true;
             }
-            if (neighbourIndex == 4) {
+            neighbourFlag = false;
+            List<Tile> neighbours = getNeighbors(currentTile);
+            for (Tile neighbour : neighbours) {
+                for (Directions direction : neighbour.getDirections()) {
+                    if (direction.equals(Directions.LEFT) && currentTile.getDirections().contains(Directions.RIGHT) && !neighbour.equals(previousTile) && neighbour.getPosX() == currentTile.getPosX() + 1) {
+                        neighbourFlag = true;
+                    } else if (direction.equals(Directions.RIGHT) && currentTile.getDirections().contains(Directions.LEFT) && !neighbour.equals(previousTile) && neighbour.getPosX() == currentTile.getPosX() - 1) {
+                        neighbourFlag = true;
+                    } else if (direction.equals(Directions.TOP) && currentTile.getDirections().contains(Directions.BOTTOM) && !neighbour.equals(previousTile) && neighbour.getPosY() == currentTile.getPosY() + 1) {
+                        neighbourFlag = true;
+                    } else if (direction.equals(Directions.BOTTOM) && currentTile.getDirections().contains(Directions.TOP) && !neighbour.equals(previousTile) && neighbour.getPosY() == currentTile.getPosY() - 1) {
+                        neighbourFlag = true;
+                    }
+                }
+                if (neighbourFlag) {
+                    currentTile.setCorrectPosition(true);
+                    previousTile = currentTile;
+                    currentTile = neighbour;
+                    repaint();
+                    break;
+                }
+            }
+            if (!neighbourFlag) {
                 currentTile.setCorrectPosition(true);
                 return false;
             }
@@ -215,19 +217,19 @@ public class GameBoard extends JPanel {
     private void setValve(Tile valve, Tile nextPipe) {
         if (valve.getPosX() == nextPipe.getPosX() && valve.getPosY() < nextPipe.getPosY()) {
             valve.setCurrentTileState(TileState.VALVE_BOTTOM);
-            valve.getPipeDirections().setBottom(true);
+            valve.setDirections(TileState.VALVE_BOTTOM);
         }
         if (valve.getPosX() == nextPipe.getPosX() && valve.getPosY() > nextPipe.getPosY()) {
             valve.setCurrentTileState(TileState.VALVE_TOP);
-            valve.getPipeDirections().setTop(true);
+            valve.setDirections(TileState.VALVE_TOP);
         }
         if (valve.getPosX() < nextPipe.getPosX() && valve.getPosY() == nextPipe.getPosY()) {
             valve.setCurrentTileState(TileState.VALVE_RIGHT);
-            valve.getPipeDirections().setRight(true);
+            valve.setDirections(TileState.VALVE_RIGHT);
         }
         if (valve.getPosX() > nextPipe.getPosX() && valve.getPosY() == nextPipe.getPosY()) {
             valve.setCurrentTileState(TileState.VALVE_LEFT);
-            valve.getPipeDirections().setLeft(true);
+            valve.setDirections(TileState.VALVE_LEFT);
         }
     }
 }
