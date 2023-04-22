@@ -18,7 +18,6 @@ public class IPipe extends Tile {
         int currentIndex = Arrays.asList(IStates).indexOf(this.currentTileState);
         int nextIndex = (currentIndex + 1) % IStates.length;
         this.currentTileState = IStates[nextIndex];
-        this.directions.clear();
         setDirections(this.currentTileState);
 
     }
@@ -27,7 +26,6 @@ public class IPipe extends Tile {
     public void setCurrentTileStateRandom() {
         int currentIndex = rand.nextInt(2);
         this.currentTileState = IStates[currentIndex];
-        this.directions.clear();
         setDirections(currentTileState);
     }
 

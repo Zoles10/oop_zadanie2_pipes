@@ -61,7 +61,6 @@ public class Tile extends JPanel {
         if (tileState.equals(TileState.I_PIPE_LEFT_RIGHT)) {
             directions.add(Directions.LEFT);
             directions.add(Directions.RIGHT);
-            System.out.println(directions.size());
         } else if (tileState.equals(TileState.I_PIPE_TOP_DOWN)) {
             directions.add(Directions.TOP);
             directions.add(Directions.BOTTOM);
