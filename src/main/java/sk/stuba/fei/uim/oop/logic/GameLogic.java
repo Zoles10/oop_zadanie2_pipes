@@ -1,6 +1,5 @@
 package sk.stuba.fei.uim.oop.logic;
 
-
 import lombok.Getter;
 
 import sk.stuba.fei.uim.oop.board.GameBoard;
@@ -14,7 +13,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 public class GameLogic extends UniversalAdapter {
-
     public static final int INITIAL_BOARD_SIZE = 8;
     private Tile lastHighlightedTile;
     private final JFrame frame;
@@ -52,7 +50,6 @@ public class GameLogic extends UniversalAdapter {
     private void setBoardSizeLabel() {
         this.boardSizeLabel.setText("Board size: " + getCurrentBoardSize() + "x" + getCurrentBoardSize());
     }
-
 
     private void gameRestart() {
         this.frame.remove(this.gameBoard);
@@ -99,7 +96,7 @@ public class GameLogic extends UniversalAdapter {
                 System.exit(0);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Path is not correct! Try again!");
+            JOptionPane.showMessageDialog(null, "Path is not correct! Try again!", "Incorrect Path", JOptionPane.ERROR_MESSAGE);
             this.gameBoard.resetCorrectPosition();
             this.gameBoard.repaint();
         }

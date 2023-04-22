@@ -50,25 +50,24 @@ public class GameBoard extends JPanel {
     }
 
     private List<Tile> getNeighbors(Tile currentTile) {
-        ArrayList<Tile> neighbors = new ArrayList<>();
-        Tile leftNeighbor = (currentTile.getPosX() > 0) ? board[currentTile.getPosY()][currentTile.getPosX() - 1] : null;
-        Tile rightNeighbor = (currentTile.getPosX() < boardSize - 1) ? board[currentTile.getPosY()][currentTile.getPosX() + 1] : null;
-        Tile topNeighbor = (currentTile.getPosY() > 0) ? board[currentTile.getPosY() - 1][currentTile.getPosX()] : null;
-        Tile bottomNeighbor = (currentTile.getPosY() < boardSize - 1) ? board[currentTile.getPosY() + 1][currentTile.getPosX()] : null;
-        if (leftNeighbor != null) {
-            neighbors.add(leftNeighbor);
-        }
-        if (rightNeighbor != null) {
-            neighbors.add(rightNeighbor);
-        }
-        if (topNeighbor != null) {
-            neighbors.add(topNeighbor);
-        }
-        if (bottomNeighbor != null) {
-            neighbors.add(bottomNeighbor);
+        java.util.List<Tile> neighbors = new ArrayList<>();
+        int x = currentTile.getPosX();
+        int y = currentTile.getPosY();
+        int[][] offsets = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
+        for (int[] offset : offsets) {
+            int neighborX = x + offset[1];
+            int neighborY = y + offset[0];
+
+            if (neighborX >= 0 && neighborX < boardSize && neighborY >= 0 && neighborY < boardSize) {
+                Tile neighbor = board[neighborY][neighborX];
+                if (neighbor != null) {
+                    neighbors.add(neighbor);
+                }
+            }
         }
         return neighbors;
     }
+
 
     private void createPath(int startX, int startY, int endX, int endY) {
         Valve startTile = new Valve(startY, startX, boardSize);

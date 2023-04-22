@@ -51,7 +51,7 @@ public class Tile extends JPanel {
         super.paintComponent(g);
         if (highlight) {
             this.setBackground(Color.LIGHT_GRAY);
-        } else  {
+        } else {
             this.setBackground(Color.WHITE);
         }
     }
@@ -95,42 +95,43 @@ public class Tile extends JPanel {
     public void setCurrentTileStateRandom() {
         this.currentTileState = TileState.EMPTY;
     }
-    protected void paintLineLeft(Graphics g){
+
+    protected void paintLineLeft(Graphics g) {
         g.setColor(Color.DARK_GRAY);
-        g.fillRect(0, tileSize/4, tileSize / 2, tileSize / 2);
+        g.fillRect(0, tileSize / 4, tileSize / 2, tileSize / 2);
     }
 
-    protected void paintLineRight(Graphics g){
+    protected void paintLineRight(Graphics g) {
         g.setColor(Color.DARK_GRAY);
-        g.fillRect(tileSize / 4, tileSize/4, tileSize , tileSize / 2);
+        g.fillRect(tileSize / 4, tileSize / 4, tileSize, tileSize / 2);
     }
 
-    protected void paintLineTop(Graphics g){
+    protected void paintLineTop(Graphics g) {
         g.setColor(Color.DARK_GRAY);
         g.fillRect(tileSize / 4, 0, tileSize / 2, tileSize / 2 + tileSize / 4);
     }
 
-    protected void paintLineBottom(Graphics g){
+    protected void paintLineBottom(Graphics g) {
         g.setColor(Color.DARK_GRAY);
-        g.fillRect(tileSize / 4, tileSize / 4, tileSize / 2, tileSize );
+        g.fillRect(tileSize / 4, tileSize / 4, tileSize / 2, tileSize);
     }
 
-    protected void paintWaterLeft(Graphics g){
+    protected void paintWaterLeft(Graphics g) {
         g.setColor(Color.BLUE);
         g.fillRect(0, tileSize * 3 / 8, tileSize * 5 / 8, tileSize / 4);
     }
 
-    protected void paintWaterRight(Graphics g){
+    protected void paintWaterRight(Graphics g) {
         g.setColor(Color.BLUE);
-        g.fillRect(tileSize * 3 / 8, tileSize * 3 / 8, tileSize , tileSize / 4);
+        g.fillRect(tileSize * 3 / 8, tileSize * 3 / 8, tileSize, tileSize / 4);
     }
 
-    protected void paintWaterTop(Graphics g){
+    protected void paintWaterTop(Graphics g) {
         g.setColor(Color.BLUE);
         g.fillRect(tileSize * 3 / 8, 0, tileSize / 4, tileSize * 5 / 8);
     }
 
-    protected void paintWaterBottom(Graphics g){
+    protected void paintWaterBottom(Graphics g) {
         g.setColor(Color.BLUE);
         g.fillRect(tileSize * 3 / 8, tileSize * 3 / 8, tileSize / 4, tileSize);
     }

@@ -41,7 +41,7 @@ public class Valve extends Tile {
         paintValve(g2d);
     }
 
-    private void paintValve(Graphics2D g2d){
+    private void paintValve(Graphics2D g2d) {
         int ovalSize = (tileSize / 10) * 8;
         int x = (tileSize - ovalSize) / 2;
         int y = (tileSize - ovalSize) / 2;
@@ -64,5 +64,4 @@ public class Valve extends Tile {
         g2d.drawLine(x, y + ovalSize / 2, x + ovalSize, y + ovalSize / 2);
         g2d.drawLine(x + ovalSize / 2, y, x + ovalSize / 2, y + ovalSize);
     }
-
 }
