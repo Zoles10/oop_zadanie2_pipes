@@ -87,7 +87,7 @@ public class GameLogic extends UniversalAdapter {
         }
         if (gameBoard.checkWin()) {
             String[] options = {"Continue", "Quit"};
-            int choice = JOptionPane.showOptionDialog(null, "You completed the level! Do you wish to continue to the next one, or quit playing?", "Level Complete", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            int choice = JOptionPane.showOptionDialog(frame, "You completed the level! Do you wish to continue to the next one, or quit playing?", "Level Complete", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (choice == JOptionPane.YES_OPTION) {
                 level++;
                 gameRestart();
@@ -96,7 +96,7 @@ public class GameLogic extends UniversalAdapter {
                 System.exit(0);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Path is not correct! Try again!", "Incorrect Path", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Path is not correct! Try again!", "Incorrect Path", JOptionPane.ERROR_MESSAGE);
             this.gameBoard.resetCorrectPosition();
             this.gameBoard.repaint();
         }

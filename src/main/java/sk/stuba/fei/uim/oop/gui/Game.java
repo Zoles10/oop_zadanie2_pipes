@@ -51,8 +51,6 @@ public class Game {
         frame.setResizable(false);
         frame.add(sidePanel, BorderLayout.NORTH);
         frame.pack();
-        frame.setSize(900, 1000);
-        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
     }
